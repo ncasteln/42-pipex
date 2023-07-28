@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <strings.h>
 
+
 /* the work of child_1 is:
 - take argv[1], which is a file, open it
 - redirect stdin to argv[1]
@@ -35,6 +36,7 @@ void	child_1(char **argv, int *pipe_fd)
 		exit(1);
 }
 
+
 /* the work of child_2 is:
 - use pipe[0] as an input (redirect 1)
 - open a writable file (argv[4]) and use as output (redirect 2)
@@ -59,10 +61,12 @@ int	child_2(char **argv, int *pipe_fd)
 	return (0);
 }
 
+
 void	check_status(int status_code)
 {
 
 }
+
 
 int main(int argc, char **argv)
 {
