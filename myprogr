@@ -1,6 +1,0 @@
-#!/bin/bash
-
-while true; do
-	echo "Hello";
-   sleep 1  # Add a sleep command to prevent excessive CPU usage
-done
