@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/08/31 13:09:24 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/08/31 18:32:36 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,11 @@ OBJS_DIR = ./objs/
 
 # ------------------------------------------------------------------------- MAND
 SRC = main.c \
-	cmd_path.c
+	get_env_var.c \
+	find_cmd.c \
+	first_child.c \
+	last_child.c \
+	parent.c
 OBJS = $(addprefix $(OBJS_DIR), $(SRC:.c=.o))
 
 # ---------------------------------------------------------------------- INCLUDE
@@ -71,8 +75,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "$(G)	[$(NAME)] removed!"
 
-
-
+re: clean fclean all
 
 G = \033[0;32m
 Y = \033[0;33m
