@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/01 17:37:21 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:10:21 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **env)
 	if (id_1 == -1)
 		return (error("fork()", errno), errno);
 	else if (id_1 == 0)
-		first_child(data, pipe_end, env);
+		return (first_child(data, pipe_end, env));
 	else
 	{
 		id_2 = fork(); // -------------------------------------------- second fork()
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **env)
 			//wait first child and return ?
 		}
 		if (id_2 == 0)
-			last_child(data, pipe_end, env);
+			return (last_child(data, pipe_end, env));
 		else
 			return (parent(data, id_1, id_2, pipe_end));
 	}

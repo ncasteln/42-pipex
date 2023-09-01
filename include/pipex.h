@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/01 17:15:44 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:05:09 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ char	**get_path(char **env);
 char	**find_cmd(char *cmd, char **path);
 
 // -------------------------------------------------------------------- FORKING
-void	first_child(t_data data, int *fd_pipe, char **env);
-void	last_child(t_data data, int *fd_pipe, char **env);
+int		first_child(t_data data, int *fd_pipe, char **env);
+int		last_child(t_data data, int *fd_pipe, char **env);
 int		parent(t_data data, pid_t id_1, pid_t id_2, int *pipe_end);
 int		wait_children(t_data data, int id_1, int id_2);
 
