@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:23:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/08/31 17:57:33 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/01 13:52:06 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,4 @@ char **get_path(char **env)
 
 	path = get_env_var(env, "PATH");
 	return (ft_split(path, ':'));
-}
-
-/* Get the current shell name */
-char *get_shell(char **env)
-{
-	char	*shell;
-	int		i;
-
-	shell = get_env_var(env, "SHELL");
-	i = ft_strlen(shell) - 1;
-	while (shell[i] && shell[i] != '/')
-		i--;
-	return (shell + i + 1);
 }

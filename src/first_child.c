@@ -6,33 +6,33 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/08/31 18:40:35 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:47:31 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	first_child(t_data data, int *fd_pipe, char **env)
+void	first_child(t_data data, int *pipe_end, char **env)
 {
-	int	fd_in;
+	int	fd_infile;
 
-	// 1) close extrem of pipe not used
-	close(fd_pipe[0]);
+	if (close(pipe_end[0]) == -1)
+		return (error("close()", errno));
 
-	// 2) open() file from which read
-	fd_in = open(data.in_file, O_RDONLY); // modify options/mods
-	if (fd_in == -1)
-		return (perror(data.shell), errno);
+	fd_infile = open(data.infile, O_RDONLY); // modify options/mods
+	if (fd_infile == -1)
+		return (error(data.infile, errno));
+	if (dup2(fd_infile, STDIN_FILENO) == -1) // from now, 0 points to "infile" and not to "keyboard" anymore
+		return (error("dup2()", errno));
+	if (close(fd_infile) == -1)
+		return (error("close()", errno));
 
-	// 3) redirect the input and the output
-	if (dup2(fd_in, STDIN_FILENO) == -1)
-		return (perror(data.shell), errno);
-	if (dup2(fd_pipe[1], STDOUT_FILENO) == -1) // remove this to verify if the cmd1 works
-		return (perror(data.shell), errno);
+	if (dup2(pipe_end[1], STDOUT_FILENO) == -1) // remove this to verify if the cmd1 works
+		return (error("dup2()", errno));
+	if (close(pipe_end[1]) == -1)
+		return (error("close()", errno));
 
-	// 4) execute the program
-	if (execve(data.cmd1[0], data.cmd1, env) == -1)
-		return (perror(data.shell), errno);
-	return (0);
+	execve(data.cmd1[0], data.cmd1, env);
+	return (error(data.cmd1[0], CMD_NOT_FOUND));
 }
 

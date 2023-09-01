@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/08/31 18:32:19 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/01 17:15:44 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,35 @@
 #include "ft_printf.h"
 #include "get_next_line.h"
 #include <fcntl.h>
-#include <stdio.h> // perror
 #include <errno.h>
+#include <stdio.h> // perror()
+#include <string.h> // strerror()
 
 typedef struct s_data
 {
-	char	*shell;
-	char	*in_file;
-	char	*out_file;
+	// pid_t	*sub_ps;
+	char	*infile;
+	char	*outfile;
 	char	**path;
 	char	**cmd1;
 	char	**cmd2;
 }				t_data;
 
+// --------------------------------------------------------------------- ERRORS
+enum e_custom_err
+{
+	CMD_NOT_FOUND = 127
+};
+void	error(char *s, int err_code);
+
 // -------------------------------------------------------------------- PARSING
-char	*get_shell(char **env);
 char	**get_path(char **env);
 char	**find_cmd(char *cmd, char **path);
 
 // -------------------------------------------------------------------- FORKING
-int		first_child(t_data data, int *fd_pipe, char **env);
-void	last_child(void);
-int		parent(void);
-
+void	first_child(t_data data, int *fd_pipe, char **env);
+void	last_child(t_data data, int *fd_pipe, char **env);
+int		parent(t_data data, pid_t id_1, pid_t id_2, int *pipe_end);
+int		wait_children(t_data data, int id_1, int id_2);
 
 #endif
