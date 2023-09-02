@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/01 18:11:13 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/02 17:42:56 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	last_child(t_data data, int *pipe_end, char **env)
 		return (error("dup2()", errno), errno);
 	close(outfile);
 
+	dprintf(2,"executing second child.\n");
 	if (execve(data.cmd2[0], data.cmd2, env) == -1)
-		return (error(data.cmd1[0], CMD_NOT_FOUND), 127);
+		return (error(data.cmd2[0], CMD_NOT_FOUND), 127);
 	return (0);
 }

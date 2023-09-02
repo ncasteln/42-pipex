@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:23:26 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/01 17:19:13 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:34:04 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static char	*custom_strerror(int err_code)
 {
+	if (err_code == 107)
+		return ("invalid argument");
 	if (err_code == 127)
 		return ("command not found");
 	return ("unknow error");
@@ -28,7 +30,7 @@ void	error(char *s, int err_code)
 		err_str = strerror(errno);
 	else
 		err_str = custom_strerror(err_code);
-	ft_putstr_fd("zsh: ", 2);
+	ft_putstr_fd("pipex: ", 2);
 	ft_putstr_fd(err_str, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(s, 2);

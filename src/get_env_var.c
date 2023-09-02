@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:23:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/01 13:52:06 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:35:50 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char *get_env_var(char **env, char *s)
 
 /* Returns the PATH env variable if exist, otherwise NULL. The value of
 the str is splitted into sub-strings, as by the delimiter ":" */
-char **get_path(char **env)
+char **get_env_path(char **env)
 {
 	char	*path;
 

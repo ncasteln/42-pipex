@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/01 18:09:57 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/02 17:42:57 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	first_child(t_data data, int *pipe_end, char **env)
 		return (error("dup2()", errno), errno);
 	if (close(pipe_end[1]) == -1)
 		return (error("close()", errno), errno);
-
+	dprintf(2, "executing first child.\n");
 	if (execve(data.cmd1[0], data.cmd1, env) == -1)
 		return (error(data.cmd1[0], CMD_NOT_FOUND), 127);
 	return (0);

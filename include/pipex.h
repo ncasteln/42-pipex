@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/01 18:05:09 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/02 17:13:02 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 typedef struct s_data
 {
-	// pid_t	*sub_ps;
+	// t_list	*ps_id;
 	char	*infile;
 	char	*outfile;
 	char	**path;
@@ -33,18 +33,18 @@ typedef struct s_data
 // --------------------------------------------------------------------- ERRORS
 enum e_custom_err
 {
-	CMD_NOT_FOUND = 127
+	INV_ARG = 107,
+	CMD_NOT_FOUND = 127,
 };
 void	error(char *s, int err_code);
 
 // -------------------------------------------------------------------- PARSING
-char	**get_path(char **env);
+char	**get_env_path(char **env);
 char	**find_cmd(char *cmd, char **path);
 
 // -------------------------------------------------------------------- FORKING
 int		first_child(t_data data, int *fd_pipe, char **env);
 int		last_child(t_data data, int *fd_pipe, char **env);
-int		parent(t_data data, pid_t id_1, pid_t id_2, int *pipe_end);
-int		wait_children(t_data data, int id_1, int id_2);
+int		parent(pid_t id_1, pid_t id_2, int *pipe_end);
 
 #endif
