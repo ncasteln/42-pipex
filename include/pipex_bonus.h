@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 16:41:49 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 18:10:23 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 typedef struct s_pipe
 {
 	pid_t	*ps_id;
-	int		**pipe_end;
+	int		(*pipe_end)[2];
 	char	*infile;
 	char	*outfile;
 	char	**path;
@@ -38,8 +38,9 @@ char	***parse_all_cmd(t_pipe *data, char **argv);
 char	**parse_single_cmd(char *arg, char **path);
 
 // -------------------------------------------------------------------- FORKING
-void	first_child(t_pipe *data, int *fd_pipe, char **env);
-void	last_child(t_pipe *data, int *fd_pipe, char **env);
+void	first_child(t_pipe *data, int i, char **env);
+void	mid_child(t_pipe *data, int i, char **env);
+void	last_child(t_pipe *data, int i, char **env);
 int		parent(t_pipe *data, int *pipe_end);
 
 // ---------------------------------------------------------------------- UTILS
@@ -53,5 +54,6 @@ enum e_custom_err
 };
 void	error(char *s, int err_code);
 void	exit_error(t_pipe *data, char *s, int err_code);
+void	print_pipe_end(int (*pipe_end)[2], int n_cmd);
 
 #endif

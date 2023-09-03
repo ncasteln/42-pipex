@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/03 14:34:42 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/03 17:42:38 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRC_BONUS = main_bonus.c \
 	get_env_var_bonus.c \
 	parse_cmd_bonus.c \
 	first_child_bonus.c \
+	mid_child_bonus.c \
 	last_child_bonus.c \
 	error_bonus.c \
 	parent_bonus.c

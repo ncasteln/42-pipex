@@ -1,55 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   last_child_bonus.c                                 :+:      :+:    :+:   */
+/*   mid_child_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 19:37:08 by ncasteln         ###   ########.fr       */
+/*   Created: 2023/09/03 17:38:39 by ncasteln          #+#    #+#             */
+/*   Updated: 2023/09/03 19:32:17 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	last_child(t_pipe *data, int i, char **env)
+void	mid_child(t_pipe *data, int i, char **env)
 {
-	int	fd_outfile;
-
-	sleep(6);
-	ft_printf("\n\n[LAST]\n");
+	sleep(i + i); // just to wait
+	ft_printf("\n[MID]\n");
 	ft_printf("[%s]\n", data->cmd[i][0]);
 
 	ft_printf("I close() fd that I don't need:\n");
 	int	j;
 	j = data->n_cmd - 1;
-	while (j >= 0)
+	while (j >= 0) // changed!!
 	{
 		if (j == (i - 1))
 		{
 			// close only write
 			close(data->pipe_end[j][1]);
-			ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
 		}
 		else if (j != i)
 		{
 			close(data->pipe_end[j][0]);
-			ft_printf("close(fd[%d])\n", data->pipe_end[j][0]);
 			close(data->pipe_end[j][1]);
-			ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
 		}
 		j--;
 	}
 
+
 	ft_printf("I read from fd[%d]\n", data->pipe_end[i - 1][0]);
 	dup2(data->pipe_end[i - 1][0], STDIN_FILENO);
 	close(data->pipe_end[i - 1][0]);
-	fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd_outfile == -1)
-		exit_error(data, data->outfile, errno);
-	ft_printf("I write to [%s] fd[%d] ", data->outfile, fd_outfile);
-	dup2(fd_outfile, STDOUT_FILENO);
-	close(fd_outfile);
+	ft_printf("I write to fd[%d]", data->pipe_end[i][1]);
+	dup2(data->pipe_end[i][1], STDOUT_FILENO);
+	close(data->pipe_end[i][1]);
+
+
 
 	if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
 		exit_error(data, data->cmd[i][0], CMD_NOT_FOUND);
@@ -61,30 +56,25 @@ void	last_child(t_pipe *data, int i, char **env)
 
 
 
-
-// void	last_child(t_pipe *data, int i, char **env)
+// void	mid_child(t_pipe *data, int i, char **env)
 // {
-// 	int	fd_outfile;
-
-// 	sleep(6);
-// 	ft_printf("\n\n[LAST]\n");
+// 	sleep(i + i); // just to wait
+// 	ft_printf("\n[MID]\n");
 // 	ft_printf("[%s]\n", data->cmd[i][0]);
-// 	ft_printf("I have no new pipe because I'm the last one");
+// 	ft_printf("I use pipe number [%d] ", i);
+// 	ft_printf("with fd [%d][%d]\n", data->pipe_end[i][0], data->pipe_end[i][1]);
 
-// 	ft_printf("I know a lot of pipes.\n");
+// 	ft_printf("I know a lot of pipes which I should close.\n");
 // 	print_pipe_end(data->pipe_end, data->n_cmd);
 
 // 	ft_printf("I read from fd[%d]\n", data->pipe_end[i - 1][0]);
 // 	dup2(data->pipe_end[i - 1][0], STDIN_FILENO);
-// 	fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 	if (fd_outfile == -1)
-// 		exit_error(data, data->outfile, errno);
-// 	ft_printf("I write to [%s] fd[%d] ", data->outfile, fd_outfile);
-// 	dup2(fd_outfile, STDOUT_FILENO);
+// 	ft_printf("I write to fd[%d]", data->pipe_end[i][1]);
+// 	dup2(data->pipe_end[i][1], STDOUT_FILENO);
 
 // 	ft_printf("I also have to close() other fd:\n");
 // 	int	j = 0;
-// 	while (j < i)
+// 	while (j < i) // (0 < 2)
 // 	{
 // 		if (j == (i - 1)) // just close the read end of the last
 // 		{
@@ -107,8 +97,6 @@ void	last_child(t_pipe *data, int i, char **env)
 // 		j++;
 // 	}
 // 	close(data->pipe_end[j][0]);
-// 	ft_printf("close(fd[%d])\n", data->pipe_end[j][0]);
-// 	close(data->pipe_end[j][1]);
 // 	ft_printf("close(fd[%d])\n", data->pipe_end[j][0]);
 
 // 	if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
