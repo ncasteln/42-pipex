@@ -6,50 +6,64 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/01 14:47:11 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/03 14:34:42 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# --------------------------------------------------------------------- VARIABLES
 NAME = pipex
 CFLAGS = -g -Wall -Wextra #-Werror
 
-# -------------------------------------------------------------------------- LIB
+# ------------------------------------------------------------------------- LIB
 LIB = $(LIBFT) $(FT_PRINTF) $(GNL)
 LIBFT = ./lib/libft/libft.a
 FT_PRINTF = ./lib/ft_printf/libftprintf.a
 GNL = ./lib/get_next_line/libgnl.a
 
-# ------------------------------------------------------------------------- SRCS
-VPATH = ./src/
+# ------------------------------------------------------------------------ SRCS
+VPATH = ./src/:./src_bonus/
 OBJS_DIR = ./objs/
 
-# ------------------------------------------------------------------------- MAND
+# ------------------------------------------------------------------------ MAND
 SRC = main.c \
 	get_env_var.c \
-	find_cmd.c \
+	parse_cmd.c \
 	first_child.c \
 	last_child.c \
 	error.c \
 	parent.c
 OBJS = $(addprefix $(OBJS_DIR), $(SRC:.c=.o))
+OBJS_FLAG = $(OBJS_DIR).mand_flag
 
-# ---------------------------------------------------------------------- INCLUDE
+# ----------------------------------------------------------------------- BONUS
+SRC_BONUS = main_bonus.c \
+	get_env_var_bonus.c \
+	parse_cmd_bonus.c \
+	first_child_bonus.c \
+	last_child_bonus.c \
+	error_bonus.c \
+	parent_bonus.c
+ifneq ($(filter bonus,$(MAKECMDGOALS)),)
+	OBJS = $(addprefix $(OBJS_DIR), $(SRC_BONUS:.c=.o))
+	OBJS_FLAG = $(OBJS_DIR).bonus_flag
+endif
+
+# --------------------------------------------------------------------- INCLUDE
 INCLUDE = -I ./include/ \
 	-I ./lib/libft/include/ \
 	-I ./lib/ft_printf/include/ \
 	-I ./lib/get_next_line/
 
-# ------------------------------------------------------------------------- RULES
+# ----------------------------------------------------------------------- RULES
 all: $(NAME)
 
-$(NAME): $(LIB) $(OBJS)
+bonus: $(NAME)
+
+$(NAME): $(LIB) $(OBJS) $(OBJS_FLAG)
 	@echo "$(NC)Compiling $@ executable file..."
-	@$(CC) \
+	@$(CC) $(CFLAGS) \
 	$(OBJS) $(LIB) \
 	-o $(NAME)
-	@echo "$(G)	$@ successfully compiled!";
-# add CFLAGS
+	@echo "$(G)	$@ successfully compiled!$(NC)";
 
 $(LIB):
 	@echo "$(NC)Compiling [libraries]..."
@@ -59,7 +73,16 @@ $(OBJS_DIR)%.o: %.c
 	@mkdir -p $(OBJS_DIR)
 	@cc $(CFLAGS) -c $< -o $@ $(INCLUDE)
 
-# ------------------------------------------------------------------- CLEANING
+# [objs_flag] make possible to re-make the exe file alternately between
+# 'all' and 'bonus' rule, without clean or fclean them
+$(OBJS_FLAG):
+	@rm -rf $(OBJS_DIR).mand_flag
+	@rm -rf $(OBJS_DIR).bonus_flag
+	@mkdir -p $(OBJS_DIR)
+	@touch $(OBJS_FLAG)
+	@echo "$(Y)	Created [objs_flag]"
+
+# -------------------------------------------------------------------- CLEANING
 clean:
 	@echo "$(NC)Removing [objs]..."
 	@rm -rf $(OBJS_DIR)
@@ -69,7 +92,7 @@ clean:
 fclean: clean
 	@echo "$(NC)Removing [$(NAME)]..."
 	@rm -f $(NAME)
-	@echo "$(G)	[$(NAME)] removed!"
+	@echo "$(G)	[$(NAME)] removed!$(NC)"
 
 re: clean fclean all
 

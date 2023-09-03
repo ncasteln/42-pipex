@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env_var.c                                      :+:      :+:    :+:   */
+/*   get_env_var_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:23:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 12:45:26 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 14:03:26 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 /* Check in env the existence of s and return ONLY its value
 (the var name is trimmed), otherwise return NULL */

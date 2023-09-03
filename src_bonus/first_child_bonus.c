@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   last_child.c                                       :+:      :+:    :+:   */
+/*   first_child_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 13:11:44 by ncasteln         ###   ########.fr       */
+/*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
+/*   Updated: 2023/09/03 14:03:31 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
-void	last_child(t_pipe *data, int *pipe_end, char **env)
+void	first_child(t_pipe *data, int *pipe_end, char **env)
 {
-	int	outfile;
+	int	fd_infile;
 
-	if (close(pipe_end[1]))
+	if (close(pipe_end[0]) == -1)
 		exit_error(data, "close()", errno);
-	outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (outfile == -1)
-		exit_error(data, data->outfile, errno);
-	if (dup2(pipe_end[0], STDIN_FILENO) == -1)
+	fd_infile = open(data->infile, O_RDONLY);
+	if (fd_infile == -1)
+		exit_error(data, data->infile, errno);
+	if (dup2(fd_infile, STDIN_FILENO) == -1)
 		exit_error(data, "dup2()", errno);
-	if (close(pipe_end[0]))
+	if (close(fd_infile) == -1)
 		exit_error(data, "close()", errno);
-	if (dup2(outfile, STDOUT_FILENO) == -1)
+	if (dup2(pipe_end[1], STDOUT_FILENO) == -1)
 		exit_error(data, "dup2()", errno);
-	if (close(outfile))
+	if (close(pipe_end[1]) == -1)
 		exit_error(data, "close()", errno);
-	if (execve(data->cmd2[0], data->cmd2, env) == -1)
-		exit_error(data, data->cmd2[0], CMD_NOT_FOUND);
+	if (execve(data->cmd1[0], data->cmd1, env) == -1)
+		exit_error(data, data->cmd1[0], CMD_NOT_FOUND);
 }

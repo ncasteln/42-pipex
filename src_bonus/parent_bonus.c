@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parent.c                                           :+:      :+:    :+:   */
+/*   parent_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 13:12:12 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 14:16:50 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 static int	check_wstatus(int wstatus)
 {
@@ -49,11 +49,11 @@ static int	wait_children(int id_1, int id_2)
 
 int	parent(t_pipe *data, int *pipe_end)
 {
-	int	last_exit_code;
+	// int	last_exit_code;
 
-	close(pipe_end[0]);
-	close(pipe_end[1]);
-	last_exit_code = wait_children(data->ps_id[0], data->ps_id[1]);
-	free_data(data);
-	return (last_exit_code);
+	// close(pipe_end[0]);
+	// close(pipe_end[1]);
+	// last_exit_code = wait_children(data->ps_id[0], data->ps_id[1]);
+	// free_data(data);
+	// return (last_exit_code);
 }

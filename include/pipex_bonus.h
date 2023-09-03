@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 14:49:20 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 14:49:40 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 # include "libft.h"
 # include "ft_printf.h"
 # include "get_next_line.h"
@@ -25,13 +25,16 @@ typedef struct s_pipe
 	char	*infile;
 	char	*outfile;
 	char	**path;
-	char	**cmd1;
-	char	**cmd2;
+	int		n_cmd;
+	char	**cmd1; // remove
+	char	**cmd2; // remove
+	char	***cmd;
 }				t_pipe;
 
 // -------------------------------------------------------------------- PARSING
 char	**get_env_path(char **env);
-char	**parse_cmd(char *cmd, char **path);
+char	***parse_all_cmd(t_pipe *data, char **argv);
+char	**parse_single_cmd(char *arg, char **path);
 
 // -------------------------------------------------------------------- FORKING
 void	first_child(t_pipe *data, int *fd_pipe, char **env);

@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 11:19:34 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 13:12:04 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	free_dptr(char **s)
 	free(s);
 }
 
-void	free_data(t_data *data)
+void	free_data(t_pipe *data)
 {
 	if (data->ps_id)
 		free(data->ps_id);
@@ -37,21 +37,21 @@ void	free_data(t_data *data)
 		free_dptr(data->cmd2);
 }
 
-static void	parse_data(t_data *data, char **argv, char **env)
+static void	parse_data(t_pipe *data, char **argv, char **env)
 {
 	data->ps_id = malloc(sizeof(pid_t) * 2);
 	if (!data->ps_id)
 		exit_error(data, "malloc()", errno);
 	data->path = get_env_path(env);
-	data->cmd1 = find_cmd(argv[2], data->path);
-	data->cmd2 = find_cmd(argv[3], data->path);
-	data->infile = argv[1];
-	data->outfile = argv[4];
+	data->cmd1 = parse_cmd(argv[2], data->path);
+	data->cmd2 = parse_cmd(argv[3], data->path);
 	if (!(data->cmd1) || !(data->cmd2))
 		exit_error(data, "argv", INV_ARG);
+	data->infile = argv[1];
+	data->outfile = argv[4];
 }
 
-static void	init_data(t_data *data)
+static void	init_data(t_pipe *data)
 {
 	data->ps_id = NULL;
 	data->path = NULL;
@@ -63,7 +63,7 @@ static void	init_data(t_data *data)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_data	data;
+	t_pipe	data;
 	int		pipe_end[2];
 
 	if (argc != 5)

@@ -6,13 +6,13 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 11:15:25 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 13:11:32 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	first_child(t_data *data, int *pipe_end, char **env)
+void	first_child(t_pipe *data, int *pipe_end, char **env)
 {
 	int	fd_infile;
 

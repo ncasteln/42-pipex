@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_cmd.c                                         :+:      :+:    :+:   */
+/*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 13:09:04 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 11:15:27 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 14:35:26 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*get_abs_path(char *path, char *cmd)
+static char	*build_abs_path(char *path, char *cmd)
 {
 	char	*abs_path;
 	char	*temp;
@@ -36,31 +36,49 @@ static int	is_empty_str(char *s)
 	return (0);
 }
 
-char	**find_cmd(char *arg, char **path)
+/* Tries the different paths until something accessible() is found */
+static char	*find_cmd(char *cmd, char **path)
 {
-	char	**cmd;
 	char	*abs_path;
 	int		i;
 
 	abs_path = NULL;
 	i = 0;
-	if (is_empty_str(arg))
-		return (NULL);
-	cmd = ft_split(arg, ' ');
-	if (access(cmd[0], F_OK) == 0)
-		return (cmd);
 	while (path[i])
 	{
 		if (abs_path)
 			free(abs_path);
-		abs_path = get_abs_path(path[i], cmd[0]);
+		abs_path = build_abs_path(path[i], cmd);
 		if (access(abs_path, F_OK) == 0)
+			return (abs_path);
+		i++;
+	}
+	if (abs_path)
+		free(abs_path);
+	return (NULL);
+}
+
+/* Verifies if an empty str is passed, if the command is already with its
+abs_path, otherwise it searches using the paths of PATH variable */
+char	**parse_cmd(char *arg, char **path)
+{
+	char	**cmd;
+	char	*abs_path;
+
+	abs_path = NULL;
+	cmd = NULL;
+	if (!is_empty_str(arg))
+	{
+		cmd = ft_split(arg, ' ');
+		if (access(cmd[0], F_OK) == 0)
+			return (cmd);
+		abs_path = find_cmd(cmd[0], path);
+		if (abs_path)
 		{
 			free(cmd[0]);
 			cmd[0] = abs_path;
 			return (cmd);
 		}
-		i++;
 	}
 	return (cmd);
 }
