@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 15:15:48 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 16:41:38 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,45 @@ static void print_pid(int *p, int n_cmd) //remove
 	ft_printf("_PS_ID_\n");
 	while (i < n_cmd)
 	{
-		ft_printf("[%s]", p[i]);
+		ft_printf("[%d]\n", p[i]);
 		i++;
 	}
 }
 
 static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 {
+	// PATH & CMDS
 	data->n_cmd = argc - 3;
-	data->ps_id = malloc(sizeof(pid_t) * data->n_cmd);
-	if (!data->ps_id)
-		exit_error(data, "malloc()", errno);
 	data->path = get_env_path(env);
 	data->cmd = parse_all_cmd(data, argv);
 	print_cmd(data->cmd); // --------------------------------------------- remove
+
+	// PID COLLECTION
+	data->ps_id = malloc(sizeof(pid_t) * data->n_cmd);
+	if (!data->ps_id)
+		exit_error(data, "malloc()", errno);
+
+	// PIPES COLLECTION
+	data->pipe_end = malloc(sizeof(int *) * (data->n_cmd - 1));
+	if (!data->pipe_end)
+		exit_error(data, "malloc()", errno);
+	data->pipe_end[0] = malloc(sizeof(int) * 2);
+	data->pipe_end[1] = malloc(sizeof(int) * 2);
+
+
+	ft_printf("The cmds are %d.\n", data->n_cmd);
+	ft_printf("I created space for %d pipes.\n", data->n_cmd - 1);
+	int i = 0;
+	while (i < (data->n_cmd - 1))
+	{
+		data->pipe_end[i][0] = -1;
+		data->pipe_end[i][1] = -1;
+		i++;
+	}
+	ft_printf("pipe_end[0][0] = %d\n", data->pipe_end[0][0]);
+	ft_printf("pipe_end[0][1] = %d\n", data->pipe_end[0][1]);
+
+	// IN AND OUTFILES
 	data->infile = argv[1];
 	data->outfile = argv[argc - 1];
 }
@@ -85,6 +110,7 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 static void	init_pipe(t_pipe *data)
 {
 	data->ps_id = NULL;
+	data->pipe_end = NULL;
 	data->path = NULL;
 	data->n_cmd = 0;
 	data->cmd = NULL;
@@ -95,33 +121,49 @@ static void	init_pipe(t_pipe *data)
 int	main(int argc, char **argv, char **env)
 {
 	t_pipe	data;
-	int		pipe_end[2];
 
 	if (argc < 5)
 		exit_error(NULL, "argc", INV_ARG);
 	init_pipe(&data);
 	parse_data(&data, argc, argv, env);
 
+
+
 	int	i;
 
 	i = 0;
 	while (i < data.n_cmd)
 	{
+		if (pipe(data.pipe_end[i]) == -1)
+			exit_error(&data, "pipe()", errno);
 		data.ps_id[i] = fork();
 		if (data.ps_id[i] == -1)
+			exit_error(&data, "fork()", errno);
+		else if (data.ps_id[i] == 0) // child process
 		{
-			// failed
+			// this code executed only for the CHILDREN
+			if (i == 0) // first child
+			{
+				ft_printf("[FIRST]\n");
+				ft_printf("[%s]\n", data.cmd[i][0]);
+			}
+			else if (i == data.n_cmd - 1) // last child
+			{
+				ft_printf("[LAST]\n");
+				ft_printf("[%s]\n", data.cmd[i][0]);
+			}
+			else // mid child
+			{
+				ft_printf("[MID]\n");
+				ft_printf("[%s]\n", data.cmd[i][0]);
+			}
+
+			char *args[] = {"echo", "Hello!", NULL};
+			if (execve("Hi Bocals", args, NULL) == -1)
+				exit(1);
 		}
-		else if (data.ps_id[i] == 0)
-		{
-			// child process
-			char *args[] = {"echo", "HelloNico", NULL};
-			execve("/bin/echo", args, NULL);
-		}
-		else
-		{
+		else // parent
 			i++;
-		}
 	}
 	print_pid(data.ps_id, data.n_cmd);
 
