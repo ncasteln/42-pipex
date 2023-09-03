@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 14:16:50 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 21:17:31 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,38 @@ static int	check_wstatus(int wstatus)
 	return (0);
 }
 
-static int	wait_children(int id_1, int id_2)
+static int	wait_children(pid_t *ps_id, int n_cmd)
 {
 	int		wstatus;
 	int		exit_code;
 	pid_t	w_pid;
+	int		i;
 
 	exit_code = 0;
-	w_pid = waitpid(id_1, &wstatus, 0);
-	if (w_pid == id_1)
-		exit_code = check_wstatus(wstatus);
-	else if (w_pid == -1)
-		error("waitpid()", errno);
-	w_pid = waitpid(id_2, &wstatus, 0);
-	if (w_pid == id_2)
-		exit_code = check_wstatus(wstatus);
-	else if (w_pid == -1)
-		error("waitpid()", errno);
+	i = 0;
+	while (i < n_cmd)
+	{
+		w_pid = waitpid(ps_id[i], &wstatus, 0);
+		if (w_pid == ps_id[i])
+			exit_code = check_wstatus(wstatus);
+		i++;
+	}
 	return (exit_code);
 }
 
-int	parent(t_pipe *data, int *pipe_end)
+int	parent(t_pipe *data)
 {
-	// int	last_exit_code;
+	int	last_exit_code;
+	int j;
 
-	// close(pipe_end[0]);
-	// close(pipe_end[1]);
-	// last_exit_code = wait_children(data->ps_id[0], data->ps_id[1]);
-	// free_data(data);
-	// return (last_exit_code);
+	j = data->n_cmd - 1;
+	while (j >= 0)
+	{
+		close(data->pipe_end[j][0]);
+		close(data->pipe_end[j][1]);
+		j--;
+	}
+	last_exit_code = wait_children(data->ps_id, data->n_cmd);
+	free_data(data);
+	return (last_exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 18:10:23 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 21:36:47 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include "get_next_line.h"
+# include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h> // strerror()
@@ -27,8 +28,6 @@ typedef struct s_pipe
 	char	*outfile;
 	char	**path;
 	int		n_cmd;
-	char	**cmd1; // remove
-	char	**cmd2; // remove
 	char	***cmd;
 }				t_pipe;
 
@@ -41,7 +40,7 @@ char	**parse_single_cmd(char *arg, char **path);
 void	first_child(t_pipe *data, int i, char **env);
 void	mid_child(t_pipe *data, int i, char **env);
 void	last_child(t_pipe *data, int i, char **env);
-int		parent(t_pipe *data, int *pipe_end);
+int		parent(t_pipe *data);
 
 // ---------------------------------------------------------------------- UTILS
 void	free_data(t_pipe *data);
