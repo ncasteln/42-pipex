@@ -6,32 +6,29 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/02 17:42:56 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 11:14:42 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	last_child(t_data data, int *pipe_end, char **env)
+void	last_child(t_data *data, int *pipe_end, char **env)
 {
 	int	outfile;
 
-	close(pipe_end[1]);
-
-	outfile = open(data.outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (close(pipe_end[1]))
+		exit_error(data, "close()", errno);
+	outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
-		return (error(data.outfile, errno), errno);
-
-	if (dup2(pipe_end[0], STDIN_FILENO) == -1) // from now, 0 points to "pipe_end[0]" and not to "keyboard" anymore
-		return (error("dup2()", errno), errno);
-	close(pipe_end[0]);
-
-	if (dup2(outfile, STDOUT_FILENO) == -1) // from now, 1 points to "outfile" and not to "terminal" anymore
-		return (error("dup2()", errno), errno);
-	close(outfile);
-
-	dprintf(2,"executing second child.\n");
-	if (execve(data.cmd2[0], data.cmd2, env) == -1)
-		return (error(data.cmd2[0], CMD_NOT_FOUND), 127);
-	return (0);
+		exit_error(data, data->outfile, errno);
+	if (dup2(pipe_end[0], STDIN_FILENO) == -1)
+		exit_error(data, "dup2()", errno);
+	if (close(pipe_end[0]))
+		exit_error(data, "close()", errno);
+	if (dup2(outfile, STDOUT_FILENO) == -1)
+		exit_error(data, "dup2()", errno);
+	if (close(outfile))
+		exit_error(data, "close()", errno);
+	if (execve(data->cmd2[0], data->cmd2, env) == -1)
+		exit_error(data, data->cmd2[0], CMD_NOT_FOUND);
 }

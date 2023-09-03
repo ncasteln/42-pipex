@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:23:26 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/02 11:34:04 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 11:12:36 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,19 @@ void	error(char *s, int err_code)
 
 	err_str = NULL;
 	if (err_code < 107)
-		err_str = strerror(errno);
+		err_str = strerror(err_code);
 	else
 		err_str = custom_strerror(err_code);
 	ft_putstr_fd("pipex: ", 2);
 	ft_putstr_fd(err_str, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(s, 2);
+}
+
+void	exit_error(t_data *data, char *s, int err_code)
+{
+	error(s, err_code);
+	if (data)
+		free_data(data);
+	exit(err_code);
 }

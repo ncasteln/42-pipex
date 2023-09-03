@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 13:09:04 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/02 12:57:35 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 11:15:27 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static char	*get_abs_path(char *path, char *cmd)
 	char	*abs_path;
 	char	*temp;
 
-	abs_path = ft_strjoin(path, "/"); // "/usr/bin/"
+	abs_path = ft_strjoin(path, "/");
 	temp = abs_path;
-	abs_path = ft_strjoin(abs_path, cmd); // "/usr/bin/wc"
+	abs_path = ft_strjoin(abs_path, cmd);
 	free(temp);
 	return (abs_path);
 }
@@ -46,7 +46,7 @@ char	**find_cmd(char *arg, char **path)
 	i = 0;
 	if (is_empty_str(arg))
 		return (NULL);
-	cmd = ft_split(arg, ' '); // malloc()
+	cmd = ft_split(arg, ' ');
 	if (access(cmd[0], F_OK) == 0)
 		return (cmd);
 	while (path[i])
