@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/03 17:42:38 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/03 21:48:11 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,9 @@ SRC_BONUS = main_bonus.c \
 	mid_child_bonus.c \
 	last_child_bonus.c \
 	error_bonus.c \
-	parent_bonus.c
+	parent_bonus.c \
+	free_utils_bonus.c
+#print_utils.c
 ifneq ($(filter bonus,$(MAKECMDGOALS)),)
 	OBJS = $(addprefix $(OBJS_DIR), $(SRC_BONUS:.c=.o))
 	OBJS_FLAG = $(OBJS_DIR).bonus_flag

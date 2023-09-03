@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 21:36:47 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 21:47:36 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_pipe
 	char	**path;
 	int		n_cmd;
 	char	***cmd;
+	int		here_doc;
 }				t_pipe;
 
 // -------------------------------------------------------------------- PARSING
@@ -44,6 +45,9 @@ int		parent(t_pipe *data);
 
 // ---------------------------------------------------------------------- UTILS
 void	free_data(t_pipe *data);
+void	print_cmd(char ***cmd); //------ ------ ------ ------ ------ ------ ------ remove
+void	print_pid(int *p, int n_cmd); //------ ------ ------ ------ ------ ------ ------ emove
+void	print_pipe_end(int (*pipe_end)[2], int n_cmd);  //------ ------ ------ ------ ------ ------ ------remove
 
 // --------------------------------------------------------------------- ERRORS
 enum e_custom_err

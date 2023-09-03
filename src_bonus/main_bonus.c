@@ -6,95 +6,34 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 21:37:49 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/03 21:45:46 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-static void	free_dptr(char **s)
+static void	create_pipes(t_pipe *data)
 {
 	int	i;
 
+	data->pipe_end = malloc(sizeof(int *) * (data->n_cmd - 1));
+	if (!data->pipe_end)
+		exit_error(data, "malloc()", errno);
 	i = 0;
-	while (s[i])
+	while (i < (data->n_cmd - 1))
 	{
-		free(s[i]);
+		data->pipe_end[i][0] = -1;
+		data->pipe_end[i][1] = -1;
 		i++;
 	}
-	free(s);
-}
-
-static void	free_tptr(char ***s)
-{
-	int	i;
-
 	i = 0;
-	while (s[i])
+	while (i < (data->n_cmd - 1))
 	{
-		free_dptr(s[i]);
-		i++;
-	}
-	free(s);
-}
-
-void	free_data(t_pipe *data)
-{
-	if (data->ps_id)
-		free(data->ps_id);
-	if (data->path)
-		free_dptr(data->path);
-	if (data->cmd)
-		free_tptr(data->cmd);
-	if (data->pipe_end)
-		free(data->pipe_end);
-}
-
-// static void print_cmd(char ***cmd) //remove
-// {
-// 	int	i, j;
-
-// 	i = 0;
-// 	ft_printf("_COMMANDS STORED_\n");
-// 	while (cmd[i])
-// 	{
-// 		j = 0;
-// 		while (cmd[i][j])
-// 		{
-// 			ft_printf("[%s]", cmd[i][j]);
-// 			j++;
-// 		}
-// 		ft_printf("\n");
-// 		i++;
-// 	}
-// }
-
-// static void print_pid(int *p, int n_cmd) //remove
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	ft_printf("_PS_ID_\n");
-// 	while (i < n_cmd)
-// 	{
-// 		ft_printf("[%d]\n", p[i]);
-// 		i++;
-// 	}
-// }
-
-void	print_pipe_end(int (*pipe_end)[2], int n_cmd) // remove
-{
-	int	i;
-
-	i = 0;
-	while (i < (n_cmd - 1))
-	{
-		ft_printf("fd[%d]\n", pipe_end[i][0]);
-		ft_printf("fd[%d]\n", pipe_end[i][1]);
+		if (pipe(data->pipe_end[i]) == -1)
+			exit_error(data, "pipe()", errno);
 		i++;
 	}
 }
-
 
 static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 {
@@ -111,26 +50,15 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 		exit_error(data, "malloc()", errno);
 
 	// PIPES COLLECTION
-	data->pipe_end = malloc(sizeof(int *) * (data->n_cmd - 1));
-	if (!data->pipe_end)
-		exit_error(data, "malloc()", errno);
-
-	while (i < (data->n_cmd - 1))
-	{
-		data->pipe_end[i][0] = -1;
-		data->pipe_end[i][1] = -1;
-		i++;
-	}
-	i = 0;
-	while (i < (data->n_cmd - 1))
-	{
-		pipe(data->pipe_end[i]); // check errors
-		i++;
-	}
+	create_pipes(data);
 
 	// IN AND OUTFILES
 	data->infile = argv[1];
 	data->outfile = argv[argc - 1];
+
+	// HERE_DOC
+	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))
+		data->here_doc = 1;
 }
 
 static void	init_data(t_pipe *data)
@@ -142,6 +70,7 @@ static void	init_data(t_pipe *data)
 	data->cmd = NULL;
 	data->infile = NULL;
 	data->outfile = NULL;
+	data->here_doc = 0;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -153,8 +82,6 @@ int	main(int argc, char **argv, char **env)
 		exit_error(NULL, "argc", INV_ARG);
 	init_data(&data);
 	parse_data(&data, argc, argv, env);
-	// print_cmd(data.cmd); // --------------------------------------------- remove
-	// print_pipe_end(data.pipe_end, data.n_cmd); // ----------------------- remove
 	i = 0;
 	while (i < data.n_cmd)
 	{
@@ -173,6 +100,5 @@ int	main(int argc, char **argv, char **env)
 		else // parent
 			i++;
 	}
-	// print_pid(data.ps_id, data.n_cmd); // ------------------------------- remove
 	return (parent(&data));
 }
