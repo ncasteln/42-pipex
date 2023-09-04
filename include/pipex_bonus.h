@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 21:47:36 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 12:44:22 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_pipe
 	int		n_cmd;
 	char	***cmd;
 	int		here_doc;
+	char	*eof;
 }				t_pipe;
 
 // -------------------------------------------------------------------- PARSING
@@ -38,6 +39,7 @@ char	***parse_all_cmd(t_pipe *data, char **argv);
 char	**parse_single_cmd(char *arg, char **path);
 
 // -------------------------------------------------------------------- FORKING
+int		get_here_doc(t_pipe *data);
 void	first_child(t_pipe *data, int i, char **env);
 void	mid_child(t_pipe *data, int i, char **env);
 void	last_child(t_pipe *data, int i, char **env);
@@ -48,6 +50,7 @@ void	free_data(t_pipe *data);
 void	print_cmd(char ***cmd); //------ ------ ------ ------ ------ ------ ------ remove
 void	print_pid(int *p, int n_cmd); //------ ------ ------ ------ ------ ------ ------ emove
 void	print_pipe_end(int (*pipe_end)[2], int n_cmd);  //------ ------ ------ ------ ------ ------ ------remove
+void	print_stdin(t_list *stdin);
 
 // --------------------------------------------------------------------- ERRORS
 enum e_custom_err
@@ -57,6 +60,5 @@ enum e_custom_err
 };
 void	error(char *s, int err_code);
 void	exit_error(t_pipe *data, char *s, int err_code);
-void	print_pipe_end(int (*pipe_end)[2], int n_cmd);
 
 #endif

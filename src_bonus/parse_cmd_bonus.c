@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 13:09:04 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 20:33:57 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 11:38:26 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,11 @@ char	**parse_single_cmd(char *arg, char **path)
 char	***parse_all_cmd(t_pipe *data, char **argv)
 {
 	int	i;
+	int	j;
 
+	j = 2;
+	if (data->here_doc)
+		j++;
 	i = 0;
 	data->cmd = malloc(sizeof(char **) * (data->n_cmd + 1));
 	if (!data->cmd)
@@ -94,7 +98,7 @@ char	***parse_all_cmd(t_pipe *data, char **argv)
 	data->cmd[data->n_cmd] = NULL;
 	while (i < data->n_cmd)
 	{
-		data->cmd[i] = parse_single_cmd(argv[i + 2], data->path);
+		data->cmd[i] = parse_single_cmd(argv[i + j], data->path);
 		if (!data->cmd[i])
 			exit_error(data, "argv", INV_ARG);
 		i++;

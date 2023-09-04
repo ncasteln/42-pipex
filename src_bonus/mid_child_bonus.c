@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 17:38:39 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 21:21:31 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 10:32:55 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 void	mid_child(t_pipe *data, int i, char **env)
 {
-	// sleep(i + i); // just to wait
-	// ft_printf("\n[MID]\n");
-	// ft_printf("[%s]\n", data->cmd[i][0]);
-
 	// ft_printf("I close() fd that I don't need:\n");
 	int	j;
 	j = data->n_cmd - 1;

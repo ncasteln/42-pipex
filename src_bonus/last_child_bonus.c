@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 20:39:55 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 11:34:09 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 void	last_child(t_pipe *data, int i, char **env)
 {
 	int	fd_outfile;
-
-	// sleep(6);
-	// ft_printf("\n\n[LAST]\n");
-	// ft_printf("[%s]\n", data->cmd[i][0]);
-
 	// ft_printf("I close() fd that I don't need:\n");
 	int	j;
 	j = data->n_cmd - 1;
@@ -44,7 +39,11 @@ void	last_child(t_pipe *data, int i, char **env)
 	// ft_printf("I read from fd[%d]\n", data->pipe_end[i - 1][0]);
 	dup2(data->pipe_end[i - 1][0], STDIN_FILENO);
 	close(data->pipe_end[i - 1][0]);
-	fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+	if (data->here_doc)
+		fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_outfile == -1)
 		exit_error(data, data->outfile, errno);
 	// ft_printf("I write to [%s] fd[%d] ", data->outfile, fd_outfile);
