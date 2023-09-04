@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 12:45:49 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 14:14:24 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,32 @@ void	first_child(t_pipe *data, int i, char **env)
 {
 	int	fd_infile;
 
+	// ft_printf("__FIRST CHILD__\n");
+	// ft_printf("I know these FD:\n");
+	// print_pipe_end(data);
+	// ft_printf("\n");
 	if (data->here_doc)
 	{
-		int	j;
-		j = data->n_cmd - 1;
-		while (j > 0)
-		{
-			close(data->pipe_end[j][0]);
-			close(data->pipe_end[j][1]);
-			j--;
-		}
-
-		// where I read
+		// ft_printf("close(fd[%d])\n", data->pipe_end[i][0]);
 		close(data->pipe_end[i][0]);
-		if (dup2(data->here_doc, STDIN_FILENO) == -1) // remove to see output
+
+		// where I read from
+		fd_infile = open("here_doc", O_RDONLY);
+		if (fd_infile == -1)
+			exit_error(data, data->infile, errno);
+		if (dup2(fd_infile, STDIN_FILENO) == -1)
 			exit_error(data, "dup2()", errno);
+		// ft_printf("I read from fd[%d] (here_doc)\n", data->here_doc);
+		close(fd_infile);
 
 		// where i write
+		// ft_printf("I write to fd[%d] ", data->pipe_end[i][1]);
 		if (dup2(data->pipe_end[i][1], STDOUT_FILENO) == -1) // remove to see output
 			exit_error(data, "dup2()", errno);
 		close(data->pipe_end[i][1]);
 
 		if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
 			exit_error(data, data->cmd[i][0], CMD_NOT_FOUND);
-		exit(0);
 	}
 
 
@@ -50,6 +52,8 @@ void	first_child(t_pipe *data, int i, char **env)
 	j = data->n_cmd - 1;
 	while (j > 0)
 	{
+		ft_printf("close(fd[%d])\n", data->pipe_end[j][0]); // BAAAAD !!!!!!!!!!!
+		ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
 		close(data->pipe_end[j][0]);
 		close(data->pipe_end[j][1]);
 		j--;

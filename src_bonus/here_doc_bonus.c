@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:42:25 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 12:44:15 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 14:10:26 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	get_here_doc(t_pipe *data)
 	}
 	if (new_line)
 		free(new_line);
+	close(here_doc); // close ??
 	// if nothing is written inhere_doc????
 	return (here_doc);
 }

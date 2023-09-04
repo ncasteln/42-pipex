@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 12:47:07 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:34:09 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,14 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 	if (!data->ps_id)
 		exit_error(data, "malloc()", errno);
 
-	// PIPES COLLECTION
+	// PIPES COLLECTION & HERE DOC CREATION
+	if (data->here_doc)
+		data->here_doc = get_here_doc(data);
 	create_pipes(data);
 
 	// IN AND OUTFILES
-	data->infile = argv[1];
+	if (!data->here_doc)
+		data->infile = argv[1];
 	data->outfile = argv[argc - 1];
 }
 
@@ -92,8 +95,6 @@ int	main(int argc, char **argv, char **env)
 		exit_error(NULL, "argc", INV_ARG);
 	init_data(&data);
 	parse_data(&data, argc, argv, env);
-	if (data.here_doc)
-		data.here_doc = get_here_doc(&data);
 	i = 0;
 	while (i < data.n_cmd)
 	{
@@ -108,6 +109,7 @@ int	main(int argc, char **argv, char **env)
 				last_child(&data, i, env);
 			else
 				mid_child(&data, i, env);
+
 		}
 		else // parent
 			i++;

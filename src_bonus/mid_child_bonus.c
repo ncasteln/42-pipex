@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 17:38:39 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 10:32:55 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:13:42 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	mid_child(t_pipe *data, int i, char **env)
 		exit_error(data, "dup2()", errno);
 	close(data->pipe_end[i][1]);
 
-
+	close(data->here_doc);
 
 	if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
 		exit_error(data, data->cmd[i][0], CMD_NOT_FOUND);

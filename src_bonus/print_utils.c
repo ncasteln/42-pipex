@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:45:54 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 12:27:12 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:32:42 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,19 @@ void	print_pid(int *p, int n_cmd) //remove
 	}
 }
 
-void	print_pipe_end(int (*pipe_end)[2], int n_cmd) // remove
+void	print_pipe_end(t_pipe *data) // remove
 {
 	int	i;
 
 	i = 0;
-	while (i < (n_cmd - 1))
+	while (i < (data->n_cmd - 1))
 	{
-		ft_printf("fd[%d]\n", pipe_end[i][0]);
-		ft_printf("fd[%d]\n", pipe_end[i][1]);
+		ft_printf("fd[%d]\n", data->pipe_end[i][0]);
+		ft_printf("fd[%d]\n", data->pipe_end[i][1]);
 		i++;
 	}
+	if (data->here_doc)
+		ft_printf("fd[%d] (hd)\n", data->here_doc);
 }
 
 void	print_stdin(t_list *stdin)
