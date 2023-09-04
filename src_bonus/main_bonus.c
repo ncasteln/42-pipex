@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 13:34:09 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 14:53:36 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,20 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 	create_pipes(data);
 
 	// IN AND OUTFILES
-	if (!data->here_doc)
+	if (!data->here_doc) // not more necessary
 		data->infile = argv[1];
 	data->outfile = argv[argc - 1];
+	if (data->here_doc)
+	{
+		// not sure about handle in this way here doc or special
+		data->fd_infile = open("here_doc", O_RDWR | O_CREAT | O_APPEND, 0644);
+		data->fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+	else
+	{
+		data->fd_infile = open(data->infile, O_RDONLY);
+		data->fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
 }
 
 static void	init_data(t_pipe *data)
@@ -82,9 +93,21 @@ static void	init_data(t_pipe *data)
 	data->cmd = NULL;
 	data->infile = NULL;
 	data->outfile = NULL;
+	data->fd_infile = -1;
+	data->fd_outfile = -1;
 	data->here_doc = 0;
 	data->eof = NULL;
 }
+
+/* CHANGE STRUCTURE OF THE PROGRAM */
+/*
+	fd_infile and fd_outfile is open() at the beginning, so that it doesnt
+	mess up fds when children close/open/redirect fd.
+	Collect first so that everything is known and doesn't change during the
+	child processes.
+	Here_doc could be an exception, because not open like infile outfile
+	in the same place ,but maybe after/before.
+*/
 
 int	main(int argc, char **argv, char **env)
 {
@@ -96,23 +119,23 @@ int	main(int argc, char **argv, char **env)
 	init_data(&data);
 	parse_data(&data, argc, argv, env);
 	i = 0;
-	while (i < data.n_cmd)
-	{
-		data.ps_id[i] = fork();
-		if (data.ps_id[i] == -1)
-			exit_error(&data, "fork()", errno);
-		else if (data.ps_id[i] == 0) // children processes
-		{
-			if (i == 0)
-				first_child(&data, 0, env);
-			else if (i == data.n_cmd - 1)
-				last_child(&data, i, env);
-			else
-				mid_child(&data, i, env);
+	// while (i < data.n_cmd)
+	// {
+	// 	data.ps_id[i] = fork();
+	// 	if (data.ps_id[i] == -1)
+	// 		exit_error(&data, "fork()", errno);
+	// 	else if (data.ps_id[i] == 0) // children processes
+	// 	{
+	// 		if (i == 0)
+	// 			first_child(&data, 0, env);
+	// 		else if (i == data.n_cmd - 1)
+	// 			last_child(&data, i, env);
+	// 		else
+	// 			mid_child(&data, i, env);
 
-		}
-		else // parent
-			i++;
-	}
-	return (parent(&data));
+	// 	}
+	// 	else // parent
+	// 		i++;
+	// }
+	// return (parent(&data));
 }

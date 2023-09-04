@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 13:32:12 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/04 14:43:00 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct s_pipe
 	int		(*pipe_end)[2];
 	char	*infile;
 	char	*outfile;
+	int		fd_infile;
+	int		fd_outfile;
 	char	**path;
 	int		n_cmd;
 	char	***cmd;
