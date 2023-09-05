@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:45:54 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 13:32:42 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 09:53:11 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	print_cmd(char ***cmd) //remove
 		ft_printf("\n");
 		i++;
 	}
+	ft_printf("\n");
 }
 
 void	print_pid(int *p, int n_cmd) //remove
@@ -44,19 +45,27 @@ void	print_pid(int *p, int n_cmd) //remove
 	}
 }
 
-void	print_pipe_end(t_pipe *data) // remove
+void	print_fd(t_pipe *data) // remove
 {
 	int	i;
 
 	i = 0;
+	ft_printf("_HERE_DOC_\n");
+	if (data->here_doc)
+		ft_printf("fd[%d] (hd)\n", data->here_doc);
+	else
+		ft_printf("No here_doc\n");
+	ft_printf("_IN and OUTFILE_\n");
+	ft_printf("fd[%d] (in)\n", data->fd_infile);
+	ft_printf("fd[%d] (out)\n", data->fd_outfile);
+	ft_printf("_PIPES_CREATED_\n");
 	while (i < (data->n_cmd - 1))
 	{
 		ft_printf("fd[%d]\n", data->pipe_end[i][0]);
 		ft_printf("fd[%d]\n", data->pipe_end[i][1]);
 		i++;
 	}
-	if (data->here_doc)
-		ft_printf("fd[%d] (hd)\n", data->here_doc);
+	ft_printf("\n");
 }
 
 void	print_stdin(t_list *stdin)

@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 14:42:21 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 11:20:05 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 void	last_child(t_pipe *data, int i, char **env)
 {
-	int	fd_outfile;
-
-	ft_printf("\n__LAST CHILD__\n");
-	ft_printf("I know the following FD:\n");
-	print_pipe_end(data);
-
+	// ft_printf("\n__LAST CHILD__\n");
+	// // ft_printf("I know the following FD:\n");
+	// print_pipe_end(data);
 	// if pipeline
 	// if (data->n_cmd > 2)
 	// {
@@ -30,13 +27,13 @@ void	last_child(t_pipe *data, int i, char **env)
 	// 		if (j == (i - 1))
 	// 		{
 	// 			// close only write
-	// 			ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
+	// // 			ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
 	// 			close(data->pipe_end[j][1]);
 	// 		}
 	// 		else if (j != i)
 	// 		{
-	// 			ft_printf("close(fd[%d])\n", data->pipe_end[j][0]);
-	// 			ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
+	// // 			ft_printf("close(fd[%d])\n", data->pipe_end[j][0]);
+	// // 			ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
 	// 			close(data->pipe_end[j][0]);
 	// 			close(data->pipe_end[j][1]);
 	// 		}
@@ -45,38 +42,36 @@ void	last_child(t_pipe *data, int i, char **env)
 	// }
 	// close(data->pipe_end[i - 1][1]);
 
+
+	// // i read from
+	// ft_printf("Read from fd[%d]\n", data->pipe_end[i - 1][0]);
+	if (dup2(data->pipe_end[i - 1][0], STDIN_FILENO) == 1)
+		exit_error(data, "dup2()", errno);
+	// i write to
+	// ft_printf("Write to fd[%d]\n", data->fd_outfile);
+	if (dup2(data->fd_outfile, STDOUT_FILENO) == -1)
+		exit_error(data, "dup2()", errno);
+
+	// close unnecessary things
 	if (data->n_cmd > 2)
 	{
 		int	j;
 		j = data->n_cmd - 3;
 		while (j >= 0)
 		{
-			ft_printf("Should close fd[%d]\n", data->pipe_end[j][0]);
-			ft_printf("Should close fd[%d]\n", data->pipe_end[j][1]);
+			// ft_printf("close(fd[%d])\n", data->pipe_end[j][0]);
+			// ft_printf("close(fd[%d])\n", data->pipe_end[j][1]);
 			close(data->pipe_end[j][0]);
 			close(data->pipe_end[j][1]);
 			j--;
 		}
 	}
-
-	// where i read from
-	dup2(data->pipe_end[i - 1][0], STDIN_FILENO);
+	// ft_printf("close(fd[%d])\n", data->pipe_end[i -1][0]);
 	close(data->pipe_end[i - 1][0]);
-
-	// where i write to
+	// ft_printf("close(fd[%d])\n", data->pipe_end[i -1][1]);
 	close(data->pipe_end[i - 1][1]);
-	if (data->here_doc)
-		fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd_outfile == -1)
-		exit_error(data, data->outfile, errno);
-	// ft_printf("fd_outfile = [%d]\n", fd_outfile);
-	dup2(fd_outfile, STDOUT_FILENO); // ????
-	close(fd_outfile);
-
-	if (data->here_doc)
-		close(data->here_doc);
+	// ft_printf("close(fd[%d])\n", data->fd_outfile);
+	close(data->fd_outfile);
 
 	if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
 		exit_error(data, data->cmd[i][0], CMD_NOT_FOUND);

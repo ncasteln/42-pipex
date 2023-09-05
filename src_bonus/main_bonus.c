@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 14:53:36 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 11:25:01 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 {
 	// HERE DOC & EOF
 	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))
-		data->here_doc = -1;
+		data->here_doc = 1;
 	if (data->here_doc)
 	{
 		if (argc < 6)
@@ -47,11 +47,28 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 		data->eof = argv[2];
 	}
 
+	// IN AND OUTFILES
+	data->infile = argv[1];
+	data->outfile = argv[argc - 1];
+
+	// FD
+	if (!data->here_doc) // no (here_doc)
+	{
+		data->fd_infile = open(argv[1], O_RDONLY);
+		data->fd_outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (data->fd_outfile == -1)
+			exit_error(data, argv[1], errno);
+	}
+	else // (here_doc)
+	{
+		data->fd_infile = open("here_doc", O_RDWR | O_CREAT | O_APPEND, 0644);
+		data->fd_outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+
 	// N_CMDS
+	data->n_cmd = argc - 3;
 	if (data->here_doc)
-		data->n_cmd = argc - 4;
-	else
-		data->n_cmd = argc - 3;
+		data->n_cmd += 1;
 
 	// PATH & CMDS
 	data->path = get_env_path(env);
@@ -66,22 +83,6 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 	if (data->here_doc)
 		data->here_doc = get_here_doc(data);
 	create_pipes(data);
-
-	// IN AND OUTFILES
-	if (!data->here_doc) // not more necessary
-		data->infile = argv[1];
-	data->outfile = argv[argc - 1];
-	if (data->here_doc)
-	{
-		// not sure about handle in this way here doc or special
-		data->fd_infile = open("here_doc", O_RDWR | O_CREAT | O_APPEND, 0644);
-		data->fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	}
-	else
-	{
-		data->fd_infile = open(data->infile, O_RDONLY);
-		data->fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	}
 }
 
 static void	init_data(t_pipe *data)
@@ -118,24 +119,26 @@ int	main(int argc, char **argv, char **env)
 		exit_error(NULL, "argc", INV_ARG);
 	init_data(&data);
 	parse_data(&data, argc, argv, env);
+	print_cmd(data.cmd);
+	print_fd(&data);
 	i = 0;
-	// while (i < data.n_cmd)
-	// {
-	// 	data.ps_id[i] = fork();
-	// 	if (data.ps_id[i] == -1)
-	// 		exit_error(&data, "fork()", errno);
-	// 	else if (data.ps_id[i] == 0) // children processes
-	// 	{
-	// 		if (i == 0)
-	// 			first_child(&data, 0, env);
-	// 		else if (i == data.n_cmd - 1)
-	// 			last_child(&data, i, env);
-	// 		else
-	// 			mid_child(&data, i, env);
-
-	// 	}
-	// 	else // parent
-	// 		i++;
-	// }
-	// return (parent(&data));
+	while (i < data.n_cmd)
+	{
+		data.ps_id[i] = fork();
+		if (data.ps_id[i] == -1)
+			exit_error(&data, "fork()", errno);
+		else if (data.ps_id[i] == 0) // children processes
+		{
+			if (i == 0)
+				first_child(&data, 0, env);
+			else if (i == data.n_cmd - 1)
+				last_child(&data, i, env);
+			else
+				mid_child(&data, i, env);
+			exit(1); // remove !!!!!
+		}
+		else // parent
+			i++;
+	}
+	return (parent(&data));
 }

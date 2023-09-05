@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:42:25 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 14:10:26 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 09:13:39 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,28 +45,3 @@ int	get_here_doc(t_pipe *data)
 	// if nothing is written inhere_doc????
 	return (here_doc);
 }
-
-
-
-
-// t_list	*get_stdin(char *eof)
-// {
-// 	t_list	*new_line;
-// 	t_list	*here_doc;
-// 	int		are_s_equal;
-
-// 	new_line = NULL;
-// 	here_doc = NULL;
-// 	ft_putstr_fd("here_doc>", 1);
-// 	while (1)
-// 	{
-// 		new_line = ft_lstnew((char *) get_next_line(0));
-// 		ft_lstadd_back(&here_doc, new_line);
-// 		are_s_equal = ft_strncmp(new_line->content, eof, ft_strlen(eof));
-// 		if (!are_s_equal) // eof
-// 			break ;
-// 		else
-// 			ft_putstr_fd("here_doc>", 1);
-// 	}
-// 	return (here_doc);
-// }

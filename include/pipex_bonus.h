@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 14:43:00 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 09:58:30 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		parent(t_pipe *data);
 void	free_data(t_pipe *data);
 void	print_cmd(char ***cmd); //------ ------ ------ ------ ------ ------ ------ remove
 void	print_pid(int *p, int n_cmd); //------ ------ ------ ------ ------ ------ ------ emove
-void	print_pipe_end(t_pipe *data);  //------ ------ ------ ------ ------ ------ ------remove
+void	print_fd(t_pipe *data);  //------ ------ ------ ------ ------ ------ ------remove
 void	print_stdin(t_list *stdin);
 
 // --------------------------------------------------------------------- ERRORS
