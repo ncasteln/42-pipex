@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 17:38:39 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 12:01:02 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:06:50 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	mid_child(t_pipe *data, int i, char **env)
 {
-	// sleep(i + i);
 	int	j;
 	j = data->n_cmd - 2;
 	while (j >= 0) // changed!!
@@ -31,7 +30,6 @@ void	mid_child(t_pipe *data, int i, char **env)
 
 	if (dup2(data->pipe_end[i - 1][0], STDIN_FILENO) == -1)
 		exit_error(data, "dup2()", errno);
-
 	if (dup2(data->pipe_end[i][1], STDOUT_FILENO) == -1)
 		exit_error(data, "dup2()", errno);
 

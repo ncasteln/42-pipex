@@ -6,11 +6,26 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:41:40 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/04 12:51:21 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:24:35 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+void	init_data(t_pipe *data)
+{
+	data->ps_id = NULL;
+	data->pipe_end = NULL;
+	data->path = NULL;
+	data->n_cmd = 0;
+	data->cmd = NULL;
+	data->infile = NULL;
+	data->outfile = NULL;
+	data->fd_infile = -1;
+	data->fd_outfile = -1;
+	data->here_doc = 0;
+	data->eof = NULL;
+}
 
 static void	free_dptr(char **s)
 {
@@ -47,7 +62,11 @@ void	free_data(t_pipe *data)
 	if (data->cmd)
 		free_tptr(data->cmd);
 	if (data->pipe_end)
-		free(data->pipe_end);
+		free(data->pipe_end); // change this to free every pipe !!!!!!!!
 	if (data->here_doc)
-		unlink("here_doc");
+	{
+		if (unlink("here_doc") == -1)
+			exit_error(data, "unlink()", errno);
+	}
+	init_data(data);
 }

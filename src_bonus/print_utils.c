@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:45:54 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 11:36:58 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:23:36 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	print_fd(t_pipe *data) // remove
 	i = 0;
 	ft_printf("_HERE_DOC_\n");
 	if (data->here_doc)
-		ft_printf("fd[%d] (hd)\n", data->here_doc);
+		ft_printf("[Yes] here_doc\n");
 	else
-		ft_printf("No here_doc\n");
+		ft_printf("[No] here_doc\n");
 	ft_printf("_IN and OUTFILE_\n");
 	ft_printf("fd[%d] (in)\n", data->fd_infile);
 	ft_printf("fd[%d] (out)\n", data->fd_outfile);

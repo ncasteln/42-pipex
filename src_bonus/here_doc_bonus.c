@@ -6,42 +6,62 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:42:25 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 09:13:39 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:03:18 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-int	get_here_doc(t_pipe *data)
+static char	*build_prompt_prefix(int n_pipes)
 {
-	int		are_s_equal;
-	int		here_doc;
-	char	*new_line;
-	char	*eof;
+	char	*prompt;
+	char	*temp;
 
-	eof = data->eof;
+	temp = NULL;
+	prompt = NULL;
+	while (n_pipes)
+	{
+		if (!prompt)
+			prompt = ft_strdup("pipe ");
+		else
+		{
+			temp = prompt;
+			prompt = ft_strjoin(prompt, "pipe ");
+			free(temp);
+		}
+		n_pipes--;
+	}
+	temp = prompt;
+	prompt = ft_strjoin(prompt, "here_doc>");
+	free(temp);
+	return (prompt);
+}
+
+int	get_prompt(t_pipe *data)
+{
+	int		are_s_different;
+	char	*new_line;
+	char	*prompt;
+
 	new_line = NULL;
-	here_doc = open("here_doc", O_RDWR | O_CREAT | O_APPEND, 0644);
-	if (here_doc == -1)
-		exit_error(data, "open()", errno);
-	ft_putstr_fd("here_doc>", 1);
+	prompt = build_prompt_prefix(data->n_cmd - 1);
+	ft_putstr_fd(prompt, 1);
 	while (1)
 	{
 		if (new_line)
 			free(new_line);
-		new_line = get_next_line(0);
-		are_s_equal = ft_strncmp(new_line, eof, ft_strlen(eof));
-		if (!are_s_equal) // eof
+		new_line = get_next_line(STDIN_FILENO);
+		are_s_different = ft_strncmp(new_line, data->eof, ft_strlen(data->eof));
+		if (!are_s_different)
 			break ;
 		else
 		{
-			ft_putstr_fd(new_line, here_doc);
-			ft_putstr_fd("here_doc>", 1);
+			ft_putstr_fd(new_line, data->fd_infile);
+			ft_putstr_fd(prompt, 1);
 		}
 	}
 	if (new_line)
 		free(new_line);
-	close(here_doc); // close ??
-	// if nothing is written inhere_doc????
-	return (here_doc);
+	free(prompt);
+	return (data->fd_infile);
 }

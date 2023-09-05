@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/04 11:42:43 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/05 15:41:59 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,8 @@ OBJS_FLAG = $(OBJS_DIR).mand_flag
 # ----------------------------------------------------------------------- BONUS
 SRC_BONUS = main_bonus.c \
 	get_env_var_bonus.c \
+	fd_creation_bonus.c \
+	here_doc_bonus.c \
 	parse_cmd_bonus.c \
 	first_child_bonus.c \
 	mid_child_bonus.c \
@@ -44,7 +46,6 @@ SRC_BONUS = main_bonus.c \
 	error_bonus.c \
 	parent_bonus.c \
 	free_utils_bonus.c \
-	here_doc_bonus.c \
 	print_utils.c
 ifneq ($(filter bonus,$(MAKECMDGOALS)),)
 	OBJS = $(addprefix $(OBJS_DIR), $(SRC_BONUS:.c=.o))

@@ -6,25 +6,17 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 12:00:54 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:06:39 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-/* int i is the index of the process necessary to remember which pipe close */
 void	first_child(t_pipe *data, int i, char **env)
 {
-	if (data->here_doc)
-	{
-		// if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
-		// 	exit_error(data, data->cmd[i][0], CMD_NOT_FOUND);
-		exit(1);
-	}
-
 	// NO HERE_DOC
 	if (data->fd_infile == -1)
-		exit_error(data, data->infile, errno);
+		exit(errno);
 	// i read from
 	if (dup2(data->fd_infile, STDIN_FILENO) == -1)
 		exit_error(data, "dup2()", errno);

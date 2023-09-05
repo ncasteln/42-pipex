@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 09:58:30 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:24:55 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include "get_next_line.h"
+// # include "get_next_line_bonus.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -24,6 +25,7 @@ typedef struct s_pipe
 {
 	pid_t	*ps_id;
 	int		(*pipe_end)[2];
+	// int		**pipe_end;
 	char	*infile;
 	char	*outfile;
 	int		fd_infile;
@@ -36,18 +38,20 @@ typedef struct s_pipe
 }				t_pipe;
 
 // -------------------------------------------------------------------- PARSING
+void	create_fd(t_pipe *data);
+int		get_prompt(t_pipe *data);
 char	**get_env_path(char **env);
 char	***parse_all_cmd(t_pipe *data, char **argv);
 char	**parse_single_cmd(char *arg, char **path);
 
 // -------------------------------------------------------------------- FORKING
-int		get_here_doc(t_pipe *data);
 void	first_child(t_pipe *data, int i, char **env);
 void	mid_child(t_pipe *data, int i, char **env);
 void	last_child(t_pipe *data, int i, char **env);
 int		parent(t_pipe *data);
 
 // ---------------------------------------------------------------------- UTILS
+void	init_data(t_pipe *data);
 void	free_data(t_pipe *data);
 void	print_cmd(char ***cmd); //------ ------ ------ ------ ------ ------ ------ remove
 void	print_pid(int *p, int n_cmd); //------ ------ ------ ------ ------ ------ ------ emove
@@ -58,7 +62,8 @@ void	print_stdin(t_list *stdin);
 enum e_custom_err
 {
 	INV_ARG = 107,
-	CMD_NOT_FOUND = 127,
+	PROMPT_ERR = 108,
+	CMD_NOT_FOUND = 127
 };
 void	error(char *s, int err_code);
 void	exit_error(t_pipe *data, char *s, int err_code);
