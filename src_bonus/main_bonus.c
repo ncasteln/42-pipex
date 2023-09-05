@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 11:25:01 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 11:59:31 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,6 @@ int	main(int argc, char **argv, char **env)
 		exit_error(NULL, "argc", INV_ARG);
 	init_data(&data);
 	parse_data(&data, argc, argv, env);
-	print_cmd(data.cmd);
-	print_fd(&data);
 	i = 0;
 	while (i < data.n_cmd)
 	{
@@ -135,7 +133,6 @@ int	main(int argc, char **argv, char **env)
 				last_child(&data, i, env);
 			else
 				mid_child(&data, i, env);
-			exit(1); // remove !!!!!
 		}
 		else // parent
 			i++;

@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 09:45:41 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 11:28:34 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,16 @@ int	parent(t_pipe *data)
 	int	last_exit_code;
 	int j;
 
-	// j = data->n_cmd - 1;
-	// while (j >= 0)
-	// {
-	// 	close(data->pipe_end[j][0]);
-	// 	close(data->pipe_end[j][1]);
-	// 	j--;
-	// }
-	// close(data->here_doc);
-
-	// last_exit_code = wait_children(data->ps_id, data->n_cmd);
+	j = data->n_cmd - 1;
+	while (j >= 0)
+	{
+		close(data->pipe_end[j][0]);
+		close(data->pipe_end[j][1]);
+		j--;
+	}
+	close(data->fd_infile);
+	close(data->fd_outfile);
+	last_exit_code = wait_children(data->ps_id, data->n_cmd);
 	free_data(data);
 	return (last_exit_code);
 }

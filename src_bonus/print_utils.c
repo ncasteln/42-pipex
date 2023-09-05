@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:45:54 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 09:53:11 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/05 11:36:58 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	print_fd(t_pipe *data) // remove
 	ft_printf("_PIPES_CREATED_\n");
 	while (i < (data->n_cmd - 1))
 	{
-		ft_printf("fd[%d]\n", data->pipe_end[i][0]);
-		ft_printf("fd[%d]\n", data->pipe_end[i][1]);
+		ft_printf("fd[%d] (r)\n", data->pipe_end[i][0]);
+		ft_printf("fd[%d] (w)\n", data->pipe_end[i][1]);
 		i++;
 	}
 	ft_printf("\n");
