@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:42:25 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 10:57:52 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:44:02 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*build_prompt_prefix(int n_pipes)
 		n_pipes--;
 	}
 	temp = prompt;
-	prompt = ft_strjoin(prompt, "here_doc>");
+	prompt = ft_strjoin(prompt, "heredoc>");
 	free(temp);
 	return (prompt);
 }

@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:41:40 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 11:22:02 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:43:17 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,3 @@ void	free_data(t_pipe *data)
 	// }
 	init_data(data);
 }
-
-	// pid_t	*ps_id;
-	// int		(*pipe_end)[2];
-	// char		**path;
-	// char		***cmd;
