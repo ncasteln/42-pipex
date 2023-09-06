@@ -6,24 +6,22 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 13:12:12 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:52:41 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*
+	WIFSIGNALED can be check only in case of a cmd which run a program (like
+	"ping"). To send a signal use "kill -sig_n pid"
+*/
 static int	check_wstatus(int wstatus)
 {
 	if (WIFEXITED(wstatus))
 		return (WEXITSTATUS(wstatus));
 	if (WIFSIGNALED(wstatus))
 		return (WTERMSIG(wstatus));
-	// if (WIFSTOPPED(wstatus))
-	// {
-	// 	ft_printf("SIG STOPPED\n");
-	// 	return (WSTOPSIG(wstatus));
-	// }
-	// if (WIFCONTINUED(wstatus))
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:41:40 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 11:43:17 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:55:34 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,5 @@ void	free_data(t_pipe *data)
 		free_tptr(data->cmd);
 	if (data->pipe_end)
 		free(data->pipe_end);
-	// {
-	// 	int i = 0;
-	// 	while (i < (data->n_cmd - 1))
-	// 	{
-	// 		free(data->pipe_end[i]);
-	// 		i++;
-	// 	}
-	// }
-	// if (data->here_doc)
-	// {
-	// 	if (unlink("here_doc") == -1)
-	// 		error("unlink()", errno);
-	// }
 	init_data(data);
 }

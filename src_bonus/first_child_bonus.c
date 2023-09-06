@@ -6,14 +6,16 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 10:45:41 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:00:29 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-/* (i) is always the index of the current process, useful to differentiate
-it from the others and redirect in/out accordingly */
+/*
+	(i) is always the index of the current process, useful to differentiate
+	it from the others and redirect in/out accordingly
+*/
 static void	close_all(t_pipe *data, int i)
 {
 	int	j;

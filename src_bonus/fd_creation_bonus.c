@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:35:20 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 11:13:29 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:54:00 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,28 +64,6 @@ static void	create_pipes(t_pipe *data)
 			exit_error(data, "pipe()", errno);
 		i++;
 	}
-	// i = 0;
-	// data->pipe_end = malloc (sizeof(int *) * data->n_cmd);
-	// if (!data->pipe_end)
-	// 	exit_error(data, "malloc()", errno);
-	// data->pipe_end[data->n_cmd] = NULL;
-	// i = 0;
-	// while (i < (data->n_cmd - 1))
-	// {
-	// 	data->pipe_end[i] = malloc (sizeof(int) * 2);
-	// 	if (!data->pipe_end)
-	// 		exit_error(data, "malloc()", errno);
-	// 	data->pipe_end[i][0] = -1;
-	// 	data->pipe_end[i][1] = -1;
-	// 	i++;
-	// }
-	// i = 0;
-	// while (i < (data->n_cmd - 1))
-	// {
-	// 	if (pipe(data->pipe_end[i]) == -1)
-	// 		exit_error(data, "pipe()", errno);
-	// 	i++;
-	// }
 }
 
 void	create_fd(t_pipe *data)
