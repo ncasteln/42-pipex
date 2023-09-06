@@ -6,12 +6,12 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/06 14:22:36 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/06 15:52:20 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra #-Werror
 
 # ------------------------------------------------------------------------- LIB
 LIB = $(LIBFT) $(FT_PRINTF) $(GNL)
@@ -39,7 +39,8 @@ SRC = main.c \
 	last_child.c \
 	error.c \
 	parent.c \
-	print_utils.c
+	print_utils.c \
+	multi_split.c
 OBJS = $(addprefix $(OBJS_DIR), $(SRC:.c=.o))
 OBJS_FLAG = $(OBJS_DIR).mand_flag
 

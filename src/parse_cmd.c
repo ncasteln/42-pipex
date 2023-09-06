@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 13:09:04 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 14:32:35 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:04:18 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*build_abs_path(char *path, char *cmd)
 	return (abs_path);
 }
 
-static int	is_empty_str(char *s)
+static int	is_empty_str(char *s) // put static if not work
 {
 	size_t	i;
 
@@ -65,13 +65,21 @@ static char	*find_cmd(char *cmd, char **path)
 char	**parse_cmd(char *arg, char **path)
 {
 	char	**cmd;
+	char	*temp; // added
 	char	*abs_path;
 
 	abs_path = NULL;
 	cmd = NULL;
+	temp = NULL;
 	if (!is_empty_str(arg))
 	{
-		cmd = ft_split(arg, ' ');
+		if (ft_strchr(arg, '\'')) // other kind of split && not only one quote
+		{
+			cmd = multi_split(arg);
+			// check return value
+		}
+		else
+			cmd = ft_split(arg, ' ');
 		if (access(cmd[0], F_OK) == 0)
 			return (cmd);
 		abs_path = find_cmd(cmd[0], path);
