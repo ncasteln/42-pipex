@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/06 13:50:13 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/06 14:22:36 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ SRC = main.c \
 	first_child.c \
 	last_child.c \
 	error.c \
-	parent.c
+	parent.c \
+	print_utils.c
 OBJS = $(addprefix $(OBJS_DIR), $(SRC:.c=.o))
 OBJS_FLAG = $(OBJS_DIR).mand_flag
 
@@ -76,10 +77,9 @@ $(NAME): $(LIB) $(OBJS) $(OBJS_FLAG)
 	-o $(NAME)
 	@echo "$(G)	$@ successfully compiled!$(NC)";
 
-$(LIB): ./lib/libft/include/libft.h
+$(LIB):
 	@echo "$(NC)Compiling [libraries]..."
-	@cd ./lib/libft/ && make
-# @$(MAKE) -C ./lib/
+	@$(MAKE) -C ./lib/
 
 $(OBJS_DIR)%.o: %.c $(HEADER)
 	@mkdir -p $(OBJS_DIR)

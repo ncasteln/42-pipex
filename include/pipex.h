@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 13:22:12 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 14:24:10 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int		parent(t_pipe *data, int *pipe_end);
 
 // ---------------------------------------------------------------------- UTILS
 void	free_data(t_pipe *data);
+void	print_cmd(char **cmd);
+void	print_pid(int *p, int n_cmd);
 
 // --------------------------------------------------------------------- ERRORS
 enum e_custom_err
