@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:35:20 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 17:25:12 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:13:29 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,22 @@ static void	no_here_doc(t_pipe *data)
 		exit_error(data, data->outfile, errno);
 }
 
+/*
+	here_doc is created with to WRITE and the prompt is taken.
+	here_doc is closed to reset the offset, and re-opened to be READ.
+*/
 static void	here_doc(t_pipe *data)
 {
 	data->fd_infile = open(data->infile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (data->fd_infile == -1)
 		exit_error(data, "open()", errno);
-	if (!get_prompt(data))
-		exit_error(data, "here_doc", PROMPT_ERR);
+	get_prompt(data);
 	close(data->fd_infile);
 	data->fd_infile = open(data->infile, O_RDONLY);
 	if (data->fd_infile == -1)
 		exit_error(data, "open()", errno);
+	if (unlink(data->infile) == -1) //  ------------------------ unlink here ???
+		error("unlink() parent", errno);
 	data->fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (data->fd_outfile == -1)
 		exit_error(data, data->outfile, errno);
@@ -40,9 +45,9 @@ static void	here_doc(t_pipe *data)
 
 static void	create_pipes(t_pipe *data)
 {
-	int	i; // change this fucking function!
+	int	i;
 
-	data->pipe_end = malloc(sizeof(int *) * (data->n_cmd - 1));
+	data->pipe_end = malloc(sizeof(int *) * (data->n_cmd));
 	if (!data->pipe_end)
 		exit_error(data, "malloc()", errno);
 	i = 0;
@@ -59,14 +64,15 @@ static void	create_pipes(t_pipe *data)
 			exit_error(data, "pipe()", errno);
 		i++;
 	}
-
-	// data->pipe_end = malloc (sizeof(int **));
+	// i = 0;
+	// data->pipe_end = malloc (sizeof(int *) * data->n_cmd);
 	// if (!data->pipe_end)
 	// 	exit_error(data, "malloc()", errno);
+	// data->pipe_end[data->n_cmd] = NULL;
 	// i = 0;
 	// while (i < (data->n_cmd - 1))
 	// {
-	// 	data->pipe_end[i] = malloc (sizeof(int *) * 2);
+	// 	data->pipe_end[i] = malloc (sizeof(int) * 2);
 	// 	if (!data->pipe_end)
 	// 		exit_error(data, "malloc()", errno);
 	// 	data->pipe_end[i][0] = -1;

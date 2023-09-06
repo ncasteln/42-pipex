@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:42:25 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 16:03:18 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 10:57:52 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*build_prompt_prefix(int n_pipes)
 	return (prompt);
 }
 
-int	get_prompt(t_pipe *data)
+void	get_prompt(t_pipe *data)
 {
 	int		are_s_different;
 	char	*new_line;
@@ -63,5 +63,4 @@ int	get_prompt(t_pipe *data)
 	if (new_line)
 		free(new_line);
 	free(prompt);
-	return (data->fd_infile);
 }

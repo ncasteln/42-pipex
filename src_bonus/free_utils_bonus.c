@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:41:40 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 17:24:35 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:22:02 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,24 @@ void	free_data(t_pipe *data)
 	if (data->cmd)
 		free_tptr(data->cmd);
 	if (data->pipe_end)
-		free(data->pipe_end); // change this to free every pipe !!!!!!!!
-	if (data->here_doc)
-	{
-		if (unlink("here_doc") == -1)
-			exit_error(data, "unlink()", errno);
-	}
+		free(data->pipe_end);
+	// {
+	// 	int i = 0;
+	// 	while (i < (data->n_cmd - 1))
+	// 	{
+	// 		free(data->pipe_end[i]);
+	// 		i++;
+	// 	}
+	// }
+	// if (data->here_doc)
+	// {
+	// 	if (unlink("here_doc") == -1)
+	// 		error("unlink()", errno);
+	// }
 	init_data(data);
 }
+
+	// pid_t	*ps_id;
+	// int		(*pipe_end)[2];
+	// char		**path;
+	// char		***cmd;

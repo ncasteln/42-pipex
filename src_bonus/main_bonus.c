@@ -6,18 +6,27 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 17:25:15 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 10:24:08 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
+/*
+	PARSE_DATA()
+	line 28) verifies here_doc and if argc is right
+	line 38) set n_cmd that should ideally execute
+	line 41-42) point to infile and outfile name (included if here_doc)
+	line 43) open every fd needed, included here_doc, and create every pipe
+	line 44) get the $PATH env variable
+	line 45) parse all the arguments and store the possible cmds
+	line 46) store the id processes so that the parent knows them
+*/
+
 static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 {
 	if (argc < 5)
 		exit_error(NULL, "argc", INV_ARG);
-
-	// HERE DOC & EOF
 	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))
 		data->here_doc = 1;
 	if (data->here_doc)
@@ -26,24 +35,14 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 			exit_error(data, "argc", INV_ARG);
 		data->eof = argv[2];
 	}
-
-	// N_CMDS
 	data->n_cmd = argc - 3;
 	if (data->here_doc)
 		data->n_cmd = argc - 4;
-
-	// IN AND OUTFILES
 	data->infile = argv[1];
 	data->outfile = argv[argc - 1];
-
-	// FD
 	create_fd(data);
-
-	// PATH & CMDS
 	data->path = get_env_path(env);
 	data->cmd = parse_all_cmd(data, argv);
-
-	// PID COLLECTION
 	data->ps_id = malloc(sizeof(pid_t) * data->n_cmd);
 	if (!data->ps_id)
 		exit_error(data, "malloc()", errno);

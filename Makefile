@@ -6,12 +6,12 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/05 15:41:59 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/06 10:36:38 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-CFLAGS = -g -Wall -Wextra #-Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 # ------------------------------------------------------------------------- LIB
 LIB = $(LIBFT) $(FT_PRINTF) $(GNL)

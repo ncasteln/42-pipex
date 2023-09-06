@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:45:54 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/05 17:23:36 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 10:07:21 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	print_cmd(char ***cmd) //remove
 {
-	int	i, j;
+	int	i;
+	int	j;
 
 	i = 0;
 	ft_printf("_COMMANDS STORED_\n");
@@ -45,7 +46,7 @@ void	print_pid(int *p, int n_cmd) //remove
 	}
 }
 
-void	print_fd(t_pipe *data) // remove
+void	print_fd(t_pipe *data)
 {
 	int	i;
 
