@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 10:24:08 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:16:27 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 /*
 	PARSE_DATA()
-	line 28) verifies here_doc and if argc is right
-	line 38) set n_cmd that should ideally execute
-	line 41-42) point to infile and outfile name (included if here_doc)
-	line 43) open every fd needed, included here_doc, and create every pipe
-	line 44) get the $PATH env variable
-	line 45) parse all the arguments and store the possible cmds
-	line 46) store the id processes so that the parent knows them
+	line 27) verifies here_doc and if argc is right
+	line 37) set n_cmd that should ideally execute
+	line 40-41) point to infile and outfile name (included if here_doc)
+	line 42) open every fd needed, included here_doc, and create every pipe
+	line 43) get the $PATH env variable
+	line 44) parse all the arguments and store the possible cmds
+	line 45) store the id processes so that the parent knows them
 */
-
 static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 {
 	if (argc < 5)
@@ -48,9 +47,11 @@ static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 		exit_error(data, "malloc()", errno);
 }
 
-/* int i is necessary to to send every child the information about the number
-of process they are (like an id), so that they know if they are the first,
-the mid or the last one */
+/*
+	(int i) is necessary to to send every child the information about the number
+	of process they are (like an id), so that they know if they are the first,
+	the mid or the last one
+*/
 int	main(int argc, char **argv, char **env)
 {
 	t_pipe	data;

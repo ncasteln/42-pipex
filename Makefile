@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 15:26:29 by ncasteln          #+#    #+#              #
-#    Updated: 2023/09/06 11:44:55 by ncasteln         ###   ########.fr        #
+#    Updated: 2023/09/06 13:50:13 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,16 @@ CFLAGS = -g -Wall -Wextra -Werror
 # ------------------------------------------------------------------------- LIB
 LIB = $(LIBFT) $(FT_PRINTF) $(GNL)
 LIBFT = ./lib/libft/libft.a
+INCLUDE_LIBFT = -I./lib/libft/include/
+LIBFT_HEADER = libft.h
+
 FT_PRINTF = ./lib/ft_printf/libftprintf.a
+INCLUDE_FT_PRINTF = -I./lib/ft_printf/include/
+FT_PRINTF_HEADER = libftprintf.h
+
 GNL = ./lib/get_next_line/libgnl.a
+INCLUDE_GNL = -I./lib/get_next_line/
+GNL_HEADER = ./lib/get_next_line/get_next_line.h
 
 # ------------------------------------------------------------------------ SRCS
 VPATH = ./src/:./src_bonus/
@@ -46,17 +54,15 @@ SRC_BONUS = main_bonus.c \
 	error_bonus.c \
 	parent_bonus.c \
 	free_utils_bonus.c \
-	print_utils.c
+	print_utils_bonus.c
 ifneq ($(filter bonus,$(MAKECMDGOALS)),)
 	OBJS = $(addprefix $(OBJS_DIR), $(SRC_BONUS:.c=.o))
 	OBJS_FLAG = $(OBJS_DIR).bonus_flag
 endif
 
 # --------------------------------------------------------------------- INCLUDE
-INCLUDE = -I ./include/ \
-	-I ./lib/libft/include/ \
-	-I ./lib/ft_printf/include/ \
-	-I ./lib/get_next_line/
+INCLUDE = -I./include/ $(INCLUDE_LIBFT) $(INCLUDE_FT_PRINTF) $(INCLUDE_GNL)
+HEADER = ./include/pipex.h
 
 # ----------------------------------------------------------------------- RULES
 all: $(NAME)
@@ -70,11 +76,12 @@ $(NAME): $(LIB) $(OBJS) $(OBJS_FLAG)
 	-o $(NAME)
 	@echo "$(G)	$@ successfully compiled!$(NC)";
 
-$(LIB):
+$(LIB): ./lib/libft/include/libft.h
 	@echo "$(NC)Compiling [libraries]..."
-	@$(MAKE) -C ./lib/
+	@cd ./lib/libft/ && make
+# @$(MAKE) -C ./lib/
 
-$(OBJS_DIR)%.o: %.c
+$(OBJS_DIR)%.o: %.c $(HEADER)
 	@mkdir -p $(OBJS_DIR)
 	@cc $(CFLAGS) -c $< -o $@ $(INCLUDE)
 

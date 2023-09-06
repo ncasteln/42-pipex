@@ -6,13 +6,13 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:45:54 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 10:07:21 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:14:14 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	print_cmd(char ***cmd) //remove
+void	print_cmd(char ***cmd)
 {
 	int	i;
 	int	j;
@@ -33,7 +33,7 @@ void	print_cmd(char ***cmd) //remove
 	ft_printf("\n");
 }
 
-void	print_pid(int *p, int n_cmd) //remove
+void	print_pid(int *p, int n_cmd)
 {
 	int	i;
 

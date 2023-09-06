@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:28:05 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 12:00:29 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:15:25 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 	(i) is always the index of the current process, useful to differentiate
-	it from the others and redirect in/out accordingly
+	it from the others and redirect in/out accordingly.
 */
 static void	close_all(t_pipe *data, int i)
 {
@@ -44,7 +44,7 @@ void	first_child(t_pipe *data, int i, char **env)
 		exit_error(data, "dup2()", errno);
 	if (dup2(data->pipe_end[i][1], STDOUT_FILENO) == -1)
 		exit_error(data, "dup2()", errno);
-	close_all(data, i); // ------------------------------ should protect ??????
+	close_all(data, i);
 	if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
 		exit_error(data, data->cmd[i][0], CMD_NOT_FOUND);
 }

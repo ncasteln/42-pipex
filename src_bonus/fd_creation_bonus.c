@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:35:20 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 11:54:00 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:13:46 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	here_doc(t_pipe *data)
 	data->fd_infile = open(data->infile, O_RDONLY);
 	if (data->fd_infile == -1)
 		exit_error(data, "open()", errno);
-	if (unlink(data->infile) == -1) //  ------------------------ unlink here ???
+	if (unlink(data->infile) == -1)
 		error("unlink() parent", errno);
 	data->fd_outfile = open(data->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (data->fd_outfile == -1)

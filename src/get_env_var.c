@@ -6,14 +6,16 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:23:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 12:45:26 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:21:00 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/* Check in env the existence of s and return ONLY its value
-(the var name is trimmed), otherwise return NULL */
+/*
+	Check in env the existence of s and return ONLY its value
+	(the var name is trimmed), otherwise return NULL.
+*/
 static char	*get_env_var(char **env, char *s)
 {
 	int	i;
@@ -28,8 +30,10 @@ static char	*get_env_var(char **env, char *s)
 	return (NULL);
 }
 
-/* Returns the PATH env variable if exist, otherwise NULL. The value of
-the str is splitted into sub-strings, as by the delimiter ":" */
+/*
+	Returns the PATH env variable if exist, otherwise NULL. The value of
+	the str is splitted into sub-strings, as by the delimiter ":"
+*/
 char	**get_env_path(char **env)
 {
 	char	*path;

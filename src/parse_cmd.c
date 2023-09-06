@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 13:09:04 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/03 14:35:26 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:21:25 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ static char	*find_cmd(char *cmd, char **path)
 	return (NULL);
 }
 
-/* Verifies if an empty str is passed, if the command is already with its
-abs_path, otherwise it searches using the paths of PATH variable */
+/*
+	Verifies if an empty str is passed, if the command is already with its
+	abs_path, otherwise it searches using the paths of PATH variable
+*/
 char	**parse_cmd(char *arg, char **path)
 {
 	char	**cmd;

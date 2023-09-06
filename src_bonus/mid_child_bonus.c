@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 17:38:39 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 10:26:33 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/06 12:13:52 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	close_all(t_pipe *data, int i)
 	int	j;
 
 	j = data->n_cmd - 2;
-	while (j >= 0) // changed!!
+	while (j >= 0)
 	{
 		if (j != i)
 		{
@@ -42,7 +42,7 @@ void	mid_child(t_pipe *data, int i, char **env)
 		exit_error(data, "dup2()", errno);
 	if (dup2(data->pipe_end[i][1], STDOUT_FILENO) == -1)
 		exit_error(data, "dup2()", errno);
-	close_all(data, i); // ------------------------------ should protect ??????
+	close_all(data, i);
 	if (execve(data->cmd[i][0], data->cmd[i], env) == -1)
 		exit_error(data, data->cmd[i][0], CMD_NOT_FOUND);
 }
