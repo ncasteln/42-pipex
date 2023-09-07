@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/07 10:11:45 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:47:51 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	print_pid(int *p, int n_cmd);
 // --------------------------------------------------------------------- ERRORS
 enum e_custom_err
 {
-	INV_ARG = 107,
+	INV_ENV = 124,
+	INV_ARG = 125,
 	CMD_NOT_FOUND = 127,
 };
 void	error(char *s, int err_code);

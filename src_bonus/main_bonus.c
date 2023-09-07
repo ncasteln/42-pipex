@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/07 09:49:02 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:52:59 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 */
 static void	parse_data(t_pipe *data, int argc, char **argv, char **env)
 {
+	if (!env || !env[0])
+		exit_error(data, "env", INV_ENV);
 	if (argc < 5)
 		exit_error(NULL, "argc", INV_ARG);
 	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))

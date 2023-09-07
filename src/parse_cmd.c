@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 13:09:04 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/07 09:59:36 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:55:02 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*find_cmd(char *cmd, char **path)
 		if (abs_path)
 			free(abs_path);
 		abs_path = build_abs_path(path[i], cmd);
-		if (access(abs_path, F_OK) == 0)
+		if (access(abs_path, F_OK | X_OK) == 0)
 			return (abs_path);
 		i++;
 	}
@@ -72,7 +72,7 @@ char	**parse_cmd(char *arg, char **path)
 	if (!is_empty_str(arg))
 	{
 		cmd = ft_split(arg, ' ');
-		if (access(cmd[0], F_OK) == 0)
+		if (access(cmd[0], F_OK | X_OK) == 0)
 			return (cmd);
 		abs_path = find_cmd(cmd[0], path);
 		if (abs_path)

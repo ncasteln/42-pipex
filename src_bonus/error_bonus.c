@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:23:26 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/07 09:37:14 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:47:28 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static char	*custom_strerror(int err_code)
 {
+	if (err_code == INV_ENV)
+		return ("invalid env");
 	if (err_code == INV_ARG)
 		return ("invalid argument");
 	if (err_code == CMD_NOT_FOUND)

@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/07 09:29:58 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 10:18:45 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_wstatus(int wstatus)
 	if (WIFEXITED(wstatus))
 		return (WEXITSTATUS(wstatus));
 	if (WIFSIGNALED(wstatus))
-		return (WTERMSIG(wstatus));
+		return (WTERMSIG(wstatus) + 128);
 	return (0);
 }
 

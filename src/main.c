@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/07 09:18:43 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:53:53 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	parse_data(t_pipe *data, char **argv, char **env)
 {
+	if (!env || !env[0])
+		exit_error(data, "env", INV_ENV);
 	data->ps_id = malloc(sizeof(pid_t) * 2);
 	if (!data->ps_id)
 		exit_error(data, "malloc()", errno);
