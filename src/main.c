@@ -6,36 +6,11 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:58 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 14:32:28 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 09:18:43 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-static void	free_dptr(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		free(s[i]);
-		i++;
-	}
-	free(s);
-}
-
-void	free_data(t_pipe *data)
-{
-	if (data->ps_id)
-		free(data->ps_id);
-	if (data->path)
-		free_dptr(data->path);
-	if (data->cmd1)
-		free_dptr(data->cmd1);
-	if (data->cmd2)
-		free_dptr(data->cmd2);
-}
 
 static void	parse_data(t_pipe *data, char **argv, char **env)
 {
@@ -51,26 +26,15 @@ static void	parse_data(t_pipe *data, char **argv, char **env)
 	data->outfile = argv[4];
 }
 
-static void	init_data(t_pipe *data)
-{
-	data->ps_id = NULL;
-	data->path = NULL;
-	data->cmd1 = NULL;
-	data->cmd2 = NULL;
-	data->infile = NULL;
-	data->outfile = NULL;
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_pipe	data;
 	int		pipe_end[2];
+
 	if (argc != 5)
 		exit_error(NULL, "argc", INV_ARG);
 	init_data(&data);
 	parse_data(&data, argv, env);
-	print_cmd(data.cmd1); // remove!!
-	print_cmd(data.cmd2); // remove!!
 	if (pipe(pipe_end) == -1)
 		exit_error(&data, "pipe()", errno);
 	data.ps_id[0] = fork();

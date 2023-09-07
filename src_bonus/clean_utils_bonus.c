@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_utils_bonus.c                                 :+:      :+:    :+:   */
+/*   clean_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 21:41:40 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 11:55:34 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 09:29:45 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+void	close_fds(t_pipe *data)
+{
+	int	i;
+
+	close(data->fd_infile);
+	close(data->fd_outfile);
+	i = data->n_cmd - 2;
+	while (i >= 0)
+	{
+		close(data->pipe_end[i][0]);
+		close(data->pipe_end[i][1]);
+		i--;
+	}
+}
 
 void	init_data(t_pipe *data)
 {

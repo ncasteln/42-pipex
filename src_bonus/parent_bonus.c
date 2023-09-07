@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:31:11 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 12:14:06 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 09:29:58 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,11 @@ static int	wait_children(pid_t *ps_id, int n_cmd)
 	return (exit_code);
 }
 
-static void	close_all(t_pipe *data)
-{
-	int	j;
-
-	j = data->n_cmd - 2;
-	while (j >= 0)
-	{
-		close(data->pipe_end[j][0]);
-		close(data->pipe_end[j][1]);
-		j--;
-	}
-	close(data->fd_infile);
-	close(data->fd_outfile);
-}
-
 int	parent(t_pipe *data)
 {
 	int	last_exit_code;
 
-	close_all(data);
+	close_fds(data);
 	last_exit_code = wait_children(data->ps_id, data->n_cmd);
 	free_data(data);
 	return (last_exit_code);

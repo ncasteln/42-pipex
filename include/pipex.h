@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 15:17:54 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 10:11:45 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PIPEX_H
 # include "libft.h"
 # include "ft_printf.h"
-# include "get_next_line.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -40,10 +39,10 @@ void	last_child(t_pipe *data, int *fd_pipe, char **env);
 int		parent(t_pipe *data, int *pipe_end);
 
 // ---------------------------------------------------------------------- UTILS
+void	init_data(t_pipe *data);
 void	free_data(t_pipe *data);
 void	print_cmd(char **cmd);
 void	print_pid(int *p, int n_cmd);
-char	**multi_split(char *arg); // --------------------------------------------------REMOVE????
 
 // --------------------------------------------------------------------- ERRORS
 enum e_custom_err

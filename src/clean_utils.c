@@ -1,40 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_utils.c                                      :+:      :+:    :+:   */
+/*   clean_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/03 21:45:54 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/07 09:53:02 by ncasteln         ###   ########.fr       */
+/*   Created: 2023/09/07 09:16:50 by ncasteln          #+#    #+#             */
+/*   Updated: 2023/09/07 09:19:22 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	print_cmd(char **cmd)
+void	init_data(t_pipe *data)
 {
-	int	i;
-
-	i = 0;
-	ft_printf("_COMMANDS STORED_\n");
-	while (cmd[i])
-	{
-		ft_printf("[%s]\n", cmd[i]);
-		i++;
-	}
-	ft_printf("\n");
+	data->ps_id = NULL;
+	data->path = NULL;
+	data->cmd1 = NULL;
+	data->cmd2 = NULL;
+	data->infile = NULL;
+	data->outfile = NULL;
 }
 
-void	print_pid(int *p, int n_cmd)
+static void	free_dptr(char **s)
 {
 	int	i;
 
 	i = 0;
-	ft_printf("_PS_ID_\n");
-	while (i < n_cmd)
+	while (s[i])
 	{
-		ft_printf("[%d]\n", p[i]);
+		free(s[i]);
 		i++;
 	}
+	free(s);
+}
+
+void	free_data(t_pipe *data)
+{
+	if (data->ps_id)
+		free(data->ps_id);
+	if (data->path)
+		free_dptr(data->path);
+	if (data->cmd1)
+		free_dptr(data->cmd1);
+	if (data->cmd2)
+		free_dptr(data->cmd2);
 }

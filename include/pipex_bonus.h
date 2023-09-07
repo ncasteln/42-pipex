@@ -6,7 +6,7 @@
 /*   By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:13:08 by ncasteln          #+#    #+#             */
-/*   Updated: 2023/09/06 10:51:20 by ncasteln         ###   ########.fr       */
+/*   Updated: 2023/09/07 09:53:49 by ncasteln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int		parent(t_pipe *data);
 // ---------------------------------------------------------------------- UTILS
 void	init_data(t_pipe *data);
 void	free_data(t_pipe *data);
+void	close_fds(t_pipe *data);
 
 // ----------------------------------------------------------------- PRINT UTILS
 void	print_cmd(char ***cmd);
@@ -61,8 +62,7 @@ void	print_stdin(t_list *stdin);
 // ---------------------------------------------------------------------- ERRORS
 enum e_custom_err
 {
-	INV_ARG = 107,
-	PROMPT_ERR = 108,
+	INV_ARG = 125,
 	CMD_NOT_FOUND = 127
 };
 void	error(char *s, int err_code);
