@@ -57,7 +57,7 @@ About the `here_doc`, there are different ways to implement it. I choose to crea
 ## Try it out
 1. Clone the repository:
 ```
-git clone https://github.com/ncasteln/42-pipex.git
+git clone https://github.com/ncasteln/42-pipex
 ```
 2. Navigate to the `pipex` directory and `make` program, or `make bonus` for all the functionalities:
 ```
